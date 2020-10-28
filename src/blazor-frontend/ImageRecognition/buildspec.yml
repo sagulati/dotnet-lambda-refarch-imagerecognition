@@ -9,6 +9,7 @@ phases:
   pre_build:
     commands:
       - echo Restore started on `date`
+      - cd src/blazor-frontend/ImageRecognition
       - dotnet restore
       
   build:
