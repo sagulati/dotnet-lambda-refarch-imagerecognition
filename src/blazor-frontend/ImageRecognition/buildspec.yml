@@ -1,0 +1,27 @@
+# AWS CodeBuild spec to build an Elastic Beanstalk artifact for AWS CodePipeline to deploy
+version: 0.2
+    
+env:
+   variables:
+     PROJECT: ImageRecognition.Web
+
+phases:   
+  pre_build:
+    commands:
+      - echo Restore started on `date`
+      - dotnet restore
+      
+  build:
+    commands:
+      - echo Build started on `date`
+      - dotnet build -c Release
+      
+  post_build:
+    commands:
+      - echo Publish started on `date`
+      - dotnet publish -c Release -o ./build_output ./${PROJECT}/${PROJECT}.csproj --self-contained false
+      
+artifacts:
+  files:
+    - '**/*'
+  base-directory: ./build_output
