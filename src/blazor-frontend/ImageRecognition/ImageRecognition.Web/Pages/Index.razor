@@ -1,43 +1,7 @@
 ﻿@page "/"
-@inject AuthenticationViewModel vm
+@attribute [Authorize]
 
-
-<div class="container">
-    <div class="col-8">
-        <p>Please enter your username and password:</p>
-
-        <div class="card shadow-lg fadein-500">
-            <div class="card-body">
-                <form>
-                    <div class="form-group">
-                        <input type="text" @bind="vm.Username" />
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" @bind="vm.Password" />
-                    </div>
-                </form>
-
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger bg-red" @onclick="@(() => vm.TryLoginAsync())">Try Login</button>
-                </div>
-
-                @if (vm.IsBusy)
-                {
-                    @*<SpinnerRow />*@
-                }
-
-                @if (vm.WasLoginSuccessful)
-                {
-                    <h6><span class="badge badge-success">Login successful </span></h6>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-
-@*<div class="column">
+<div class="column">
     <div class="ui segment">
         <h3 class="ui header">Add a new album</h3>
         <div class="ui action left icon input">
@@ -55,4 +19,4 @@
             </div>
         </div>
     </div>
-</div>*@
+</div>

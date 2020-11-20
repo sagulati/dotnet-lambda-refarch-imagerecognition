@@ -1,7 +1,7 @@
 ﻿using Amazon.Runtime;
 using System.Net.Http;
 
-namespace AwsCognitoExample.Services
+namespace ImageRecognition.Web.Services
 {
     public class BlazorHttpClientFactory : HttpClientFactory
     {

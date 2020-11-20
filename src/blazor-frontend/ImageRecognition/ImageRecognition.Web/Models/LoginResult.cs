@@ -1,65 +1,69 @@
 ﻿using Amazon.Extensions.CognitoAuthentication;
-using Amazon.Runtime;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ImageRecognition.Web.Models
 {
-    public class CognitoResponse
+    public class LoginResponse
     {
-        public ResponseType Type { get; }
-
-        public bool IsAuthenticated =>
-            Type == ResponseType.Ok &&
-            TokenExpiresAt > DateTime.Now;
-
-        public string SessionId { get;}
-        public string AccessToken { get; private set; }
-        public string IdToken { get; private set; }
-        public string RefreshToken { get; private set; }
-
-        public DateTime TokenIssuedAt { get; }
-        public DateTime TokenExpiresAt { get; }
-
-        public string CredentialsAccessKey { get; private set; }
-        public string CredentialsSecretKey { get; private set; }
-        public string CredentialToken { get; private set; }
-
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Name { get; private set; }
-        public List<string> Roles { get; private set; }
-        public Exception Exception { get; set; }
-        public string UserAgent { get; set; }
-
-        public string TraceLog { get; set; }
-
-        public CognitoResponse(ResponseType type, AuthFlowResponse response = null, CognitoUser user = null, ImmutableCredentials credentials = null)
+        public LoginResponse(ResponseType responseType, AuthFlowResponse response = null, CognitoUser user = null)
         {
-            Type = type;
+
+            ResponseType = responseType;
+
             if (response != null)
             {
                 SessionId = response.SessionID;
                 AccessToken = response.AuthenticationResult?.AccessToken;
-                IdToken = response.AuthenticationResult?.IdToken;
+                IdentityToken = response.AuthenticationResult?.IdToken;
                 RefreshToken = response.AuthenticationResult?.RefreshToken;
             }
+
             if (user != null && user.SessionTokens != null)
             {
                 TokenIssuedAt = user.SessionTokens.IssuedTime;
                 TokenExpiresAt = user.SessionTokens.ExpirationTime;
             }
-            if (credentials != null)
-            {
-                CredentialsAccessKey = credentials.AccessKey;
-                CredentialsSecretKey = credentials.SecretKey;
-                CredentialToken = credentials.Token;
-            }
+
             ParseIdToken();
         }
 
+        public ResponseType ResponseType { get; }
+
+        public bool Successful => IsAuthenticated;
+
+        public string Error { get; set; }
+
+        public string AccessToken { get; private set; }
+
+        public string IdentityToken { get; private set; }
+
+        public string RefreshToken { get; private set; }
+
+        public string SessionId { get; private set; }
+
+        public string Username { get; set; }
+
+        public string Email { get; private set; }
+
+        public string Name { get; private set; }
+
+        public List<string> Roles { get; private set; }
+
+        public Exception Exception { get; set; }
+
+        public string UserAgent { get; set; }
+
+        public DateTime TokenIssuedAt { get; }
+        
+        public DateTime TokenExpiresAt { get; }
+
+        public bool IsAuthenticated =>
+            ResponseType == ResponseType.Ok &&
+            TokenExpiresAt > DateTime.Now;
 
         private void ParseIdToken()
         {
@@ -68,11 +72,11 @@ namespace ImageRecognition.Web.Models
             Email = string.Empty;
             Roles = new List<string>();
 
-            if (!string.IsNullOrEmpty(IdToken))
+            if (!string.IsNullOrEmpty(IdentityToken))
             {
                 try
                 {
-                    string idToken = IdToken.Split('.')[1];
+                    string idToken = IdentityToken.Split('.')[1];
                     idToken = DecodeBase64Url(idToken);
                     var jObject = JObject.Parse(idToken);
 
@@ -96,5 +100,7 @@ namespace ImageRecognition.Web.Models
             var byteArray = Convert.FromBase64String(base64String);
             return System.Text.Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
         }
+
+        
     }
 }

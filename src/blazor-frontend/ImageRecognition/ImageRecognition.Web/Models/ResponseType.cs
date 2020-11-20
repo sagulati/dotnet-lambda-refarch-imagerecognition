@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ImageRecognition.Web.Models
 {
-    public enum CognitoResponseType
+    public enum ResponseType
     {
         Unknown,
         Ok,

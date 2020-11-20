@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using AwsCognitoExample.Services;
-using ImageRecognition.Web.ViewModel;
+using Blazored.LocalStorage;
+using ImageRecognition.Web.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace ImageRecognition.Web
 {
@@ -20,9 +21,11 @@ namespace ImageRecognition.Web
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-            builder.Services.AddScoped<AuthenticationViewModel>();
-            builder.Services.AddScoped<AuthenticationService>();
-
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, AWSAuthenticationStateProvider>();
+            builder.Services.AddScoped<IAuthenticationService, AWSAuthenticationService>();
+            builder.Services.AddScoped<CognitoAuthenticationService>();
 
             builder.Services.AddOidcAuthentication(options =>
             {

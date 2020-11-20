@@ -1,5 +1,4 @@
-﻿using AwsCognitoExample.Services;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace ImageRecognition.Web.ViewModel
 {
     public class AuthenticationViewModel
     {
-        private readonly AuthenticationService authenticationService;
+        private readonly CognitoAuthenticationService authenticationService;
 
         #region Properties
         public bool IsBusy { get; set; }
@@ -21,7 +20,7 @@ namespace ImageRecognition.Web.ViewModel
         public bool WasLoginSuccessful { get; set; }
         #endregion
 
-        public AuthenticationViewModel(AuthenticationService authentication)
+        public AuthenticationViewModel(CognitoAuthenticationService authentication)
         {
             authenticationService = authentication;
         }
