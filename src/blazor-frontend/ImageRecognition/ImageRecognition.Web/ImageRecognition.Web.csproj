@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\CognitoResponse.cs" />
     <Compile Remove="ViewModel\AuthenticationViewModel.cs" />
   </ItemGroup>
 

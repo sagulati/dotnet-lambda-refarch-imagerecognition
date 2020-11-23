@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace ImageRecognition.Web.Services
 {
+    /// <summary>
+    /// https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/cognito-authentication-extension.html
+    /// </summary>
     public class CognitoAuthenticationService
     {
         private readonly RegionEndpoint awsRegionEndpoint = RegionEndpoint.USEast1;

@@ -38,10 +38,6 @@ namespace ImageRecognition.Web.Services
 
         public async Task<LoginResponse> Login(LoginModel loginModel)
         {
-            //var loginAsJson = JsonSerializer.Serialize(loginModel);
-            //var response = await _httpClient.PostAsync("api/Login", new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
-            //var loginResult = JsonSerializer.Deserialize<LoginResult>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
             LoginResponse loginResponse = await _cognitoAuthenticationService.TryLoginAsync(loginModel.UserName, loginModel.Password);
             
             if (!loginResponse.IsAuthenticated)
