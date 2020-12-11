@@ -1,0 +1,22 @@
+@inject IAlbumClient AlbumClient
+
+<div class="ui segment">
+    <h3 class="ui header">My Albums</h3>
+    <div role="list" class="ui divided relaxed list">
+        <div role="listitem" class="item">
+            <a href="/albums/92470788-51c4-43f6-8ab8-5b13e5cb536c">Sanjay Gulati</a>
+        </div>
+    </div>
+</div>
+
+@code {      
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await AlbumClient.MyQueryAsync();
+
+        var data = result?.Data?.ListAlbums;
+
+    }
+
+}

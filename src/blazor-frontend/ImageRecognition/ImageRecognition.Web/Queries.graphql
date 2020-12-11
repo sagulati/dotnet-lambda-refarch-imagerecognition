@@ -1,0 +1,9 @@
+query MyQuery {
+  listAlbums {
+    items {
+      id
+      name
+      owner
+    }
+  }
+}

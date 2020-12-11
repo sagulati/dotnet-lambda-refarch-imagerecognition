@@ -7,8 +7,8 @@
 
 <AuthorizeView>
     <Authorized>
-        <div>Hello, @context.User.Claims.FirstOrDefault(x => x.Type == "username").Value</div>
-        <div><a href="#" @onclick="BeginSignOut">Log out</a></div>
+        <div class="ui">Hello, @context.User.Claims.FirstOrDefault(x => x.Type == "username").Value</div>
+        <div class="ui"><a href="#" @onclick="BeginSignOut">Log out</a></div>
 </Authorized>
     <NotAuthorized>
         <a href="authentication/login">Log in</a>
