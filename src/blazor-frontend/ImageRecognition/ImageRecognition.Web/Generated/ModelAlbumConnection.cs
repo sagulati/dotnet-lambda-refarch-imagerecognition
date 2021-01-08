@@ -10,11 +10,11 @@ namespace ImageRecognition.Web
         : IModelAlbumConnection
     {
         public ModelAlbumConnection(
-            global::System.Collections.Generic.IReadOnlyList<global::ImageRecognition.Web.IAlbum>? items)
+            global::System.Collections.Generic.IReadOnlyList<global::ImageRecognition.Web.IAlbum1>? items)
         {
             Items = items;
         }
 
-        public global::System.Collections.Generic.IReadOnlyList<global::ImageRecognition.Web.IAlbum>? Items { get; }
+        public global::System.Collections.Generic.IReadOnlyList<global::ImageRecognition.Web.IAlbum1>? Items { get; }
     }
 }

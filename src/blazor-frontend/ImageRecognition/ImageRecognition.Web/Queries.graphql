@@ -1,9 +1,31 @@
-query MyQuery {
-  listAlbums {
-    items {
+query GetAlbum($id: ID!) {
+    getAlbum(id: $id) {
       id
       name
       owner
+      photos {
+        items {
+          id
+          albumId
+          owner
+          bucket
+          format
+          exifMake
+          exitModel
+          SfnExecutionArn
+          ProcessingStatus
+          objectDetected
+        }
+        nextToken
+      }
     }
+  }
+
+query ListAlbums{
+  listAlbums{
+      items {
+        id
+        name
+      }
   }
 }

@@ -6,14 +6,8 @@ using StrawberryShake;
 namespace ImageRecognition.Web
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial interface IAlbum
+    public partial interface IListAlbums
     {
-        string Id { get; }
-
-        string Name { get; }
-
-        string? Owner { get; }
-
-        global::ImageRecognition.Web.IModelPhotoConnection? Photos { get; }
+        global::ImageRecognition.Web.IModelAlbumConnection? ListAlbums { get; }
     }
 }

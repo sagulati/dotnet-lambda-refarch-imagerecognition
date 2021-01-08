@@ -6,8 +6,13 @@ using StrawberryShake;
 namespace ImageRecognition.Web
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial interface IMyQuery
+    public enum Status
     {
-        global::ImageRecognition.Web.IModelAlbumConnection? ListAlbums { get; }
+        Aborted,
+        Failed,
+        Pending,
+        Running,
+        Succeeded,
+        TimedOut
     }
 }

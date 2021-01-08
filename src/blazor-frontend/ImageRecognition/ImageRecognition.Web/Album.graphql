@@ -1,412 +1,362 @@
 scalar AWSDate
-
 scalar AWSTime
-
 scalar AWSDateTime
 scalar AWSTimestamp
 scalar AWSEmail
 scalar AWSJSON
 scalar AWSURL
 scalar AWSPhone
-
 scalar AWSIPAddress
 
-type Album 
- {
-	id: ID!
-	name: String!
-	owner: String
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
-	photos(
-		uploadTime: ModelStringKeyConditionInput,
-		filter: ModelPhotoFilterInput,
-		sortDirection: ModelSortDirection,
-		limit: Int,
-		nextToken: String
-	): ModelPhotoConnection
-		
 
+type Album {
+  createdAt: AWSDateTime!
+  id: ID!
+  name: String!
+  owner: String
+  photos(filter: ModelPhotoFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, uploadTime: ModelStringKeyConditionInput): ModelPhotoConnection  
+  updatedAt: AWSDateTime!
 }
 
-input CreateAlbumInput {
-	id: ID
-	name: String!
-	owner: String
+type GeoCoordinates {
+  Latitude: Latitude!
+  Longtitude: Longtitude!
 }
 
-input CreatePhotoInput {
-	id: ID
-	albumId: ID!
-	owner: String
-	uploadTime: AWSDateTime!
-	bucket: String!
-	fullsize: PhotoS3InfoInput
-	thumbnail: PhotoS3InfoInput
-	format: String
-	exifMake: String
-	exitModel: String
-	SfnExecutionArn: String
-	ProcessingStatus: Status
-	objectDetected: [String]
-	geoLocation: GeoCoordinatesInput
+type Latitude {
+  D: Float!
+  Direction: GeoCoordinateDirection!
+  M: Float!
+  S: Float!
 }
 
-input DeleteAlbumInput {
-	id: ID
+type Longtitude {
+  D: Float!
+  Direction: GeoCoordinateDirection!
+  M: Float!
+  S: Float!
 }
 
-input DeletePhotoInput {
-	id: ID
+type ModelAlbumConnection {
+  items: [Album]
+  nextToken: String
 }
 
-enum GeoCoordinateDirection {
-	N
-	W
-	S
-	E
-}
-
-type GeoCoordinates 
- {
-	Latitude: Latitude!
-	Longtitude: Longtitude!
-}
-
-input GeoCoordinatesInput {
-	Latitude: LatitudeInput!
-	Longtitude: LongtitudeInput!
-}
-
-type Latitude 
- {
-	D: Float!
-	M: Float!
-	S: Float!
-	Direction: GeoCoordinateDirection!
-}
-
-input LatitudeInput {
-	D: Float!
-	M: Float!
-	S: Float!
-	Direction: GeoCoordinateDirection!
-}
-
-type Longtitude 
- {
-	D: Float!
-	M: Float!
-	S: Float!
-	Direction: GeoCoordinateDirection!
-}
-
-input LongtitudeInput {
-	D: Float!
-	M: Float!
-	S: Float!
-	Direction: GeoCoordinateDirection!
-}
-
-input ModelAlbumConditionInput {
-	name: ModelStringInput
-	and: [ModelAlbumConditionInput]
-	or: [ModelAlbumConditionInput]
-	not: ModelAlbumConditionInput
-}
-
-type ModelAlbumConnection 
- {
-	items: [Album]
-	nextToken: String
-}
-
-input ModelAlbumFilterInput {
-	id: ModelIDInput
-	name: ModelStringInput
-	owner: ModelStringInput
-	and: [ModelAlbumFilterInput]
-	or: [ModelAlbumFilterInput]
-	not: ModelAlbumFilterInput
-}
-
-enum ModelAttributeTypes {
-	binary
-	binarySet
-	bool
-	list
-	map
-	number
-	numberSet
-	string
-	stringSet
-	_null
-}
-
-input ModelBooleanInput {
-	ne: Boolean
-	eq: Boolean
-	attributeExists: Boolean
-	attributeType: ModelAttributeTypes
-}
-
-input ModelFloatInput {
-	ne: Float
-	eq: Float
-	le: Float
-	lt: Float
-	ge: Float
-	gt: Float
-	between: [Float]
-	attributeExists: Boolean
-	attributeType: ModelAttributeTypes
-}
-
-input ModelIDInput {
-	ne: ID
-	eq: ID
-	le: ID
-	lt: ID
-	ge: ID
-	gt: ID
-	contains: ID
-	notContains: ID
-	between: [ID]
-	beginsWith: ID
-	attributeExists: Boolean
-	attributeType: ModelAttributeTypes
-	size: ModelSizeInput
-}
-
-input ModelIntInput {
-	ne: Int
-	eq: Int
-	le: Int
-	lt: Int
-	ge: Int
-	gt: Int
-	between: [Int]
-	attributeExists: Boolean
-	attributeType: ModelAttributeTypes
-}
-
-input ModelPhotoConditionInput {
-	albumId: ModelIDInput
-	uploadTime: ModelStringInput
-	bucket: ModelStringInput
-	format: ModelStringInput
-	exifMake: ModelStringInput
-	exitModel: ModelStringInput
-	SfnExecutionArn: ModelStringInput
-	ProcessingStatus: ModelStatusInput
-	objectDetected: ModelStringInput
-	and: [ModelPhotoConditionInput]
-	or: [ModelPhotoConditionInput]
-	not: ModelPhotoConditionInput
-}
-
-type ModelPhotoConnection 
- {
-	items: [Photo]
-	nextToken: String
-}
-
-input ModelPhotoFilterInput {
-	id: ModelIDInput
-	albumId: ModelIDInput
-	owner: ModelStringInput
-	uploadTime: ModelStringInput
-	bucket: ModelStringInput
-	format: ModelStringInput
-	exifMake: ModelStringInput
-	exitModel: ModelStringInput
-	SfnExecutionArn: ModelStringInput
-	ProcessingStatus: ModelStatusInput
-	objectDetected: ModelStringInput
-	and: [ModelPhotoFilterInput]
-	or: [ModelPhotoFilterInput]
-	not: ModelPhotoFilterInput
-}
-
-input ModelSizeInput {
-	ne: Int
-	eq: Int
-	le: Int
-	lt: Int
-	ge: Int
-	gt: Int
-	between: [Int]
-}
-
-enum ModelSortDirection {
-	ASC
-	DESC
-}
-
-input ModelStatusInput {
-	eq: Status
-	ne: Status
-}
-
-input ModelStringInput {
-	ne: String
-	eq: String
-	le: String
-	lt: String
-	ge: String
-	gt: String
-	contains: String
-	notContains: String
-	between: [String]
-	beginsWith: String
-	attributeExists: Boolean
-	attributeType: ModelAttributeTypes
-	size: ModelSizeInput
-}
-
-input ModelStringKeyConditionInput {
-	eq: String
-	le: String
-	lt: String
-	ge: String
-	gt: String
-	between: [String]
-	beginsWith: String
+type ModelPhotoConnection {
+  items: [Photo]
+  nextToken: String
 }
 
 type Mutation {
-	startSfnExecution(input: StartSfnExecutionInput!): StartSfnExecutionResult
-		
-	createAlbum(input: CreateAlbumInput!, condition: ModelAlbumConditionInput): Album
-		
-
-	updateAlbum(input: UpdateAlbumInput!, condition: ModelAlbumConditionInput): Album
-		
-
-	deleteAlbum(input: DeleteAlbumInput!, condition: ModelAlbumConditionInput): Album
-		
-
-	createPhoto(input: CreatePhotoInput!, condition: ModelPhotoConditionInput): Photo
-		
-
-	updatePhoto(input: UpdatePhotoInput!, condition: ModelPhotoConditionInput): Photo
-		
-
-	deletePhoto(input: DeletePhotoInput!, condition: ModelPhotoConditionInput): Photo
-		
-
+  createAlbum(condition: ModelAlbumConditionInput, input: CreateAlbumInput!): Album  
+  createPhoto(condition: ModelPhotoConditionInput, input: CreatePhotoInput!): Photo  
+  deleteAlbum(condition: ModelAlbumConditionInput, input: DeleteAlbumInput!): Album  
+  deletePhoto(condition: ModelPhotoConditionInput, input: DeletePhotoInput!): Photo  
+  startSfnExecution(input: StartSfnExecutionInput!): StartSfnExecutionResult 
+  updateAlbum(condition: ModelAlbumConditionInput, input: UpdateAlbumInput!): Album  
+  updatePhoto(condition: ModelPhotoConditionInput, input: UpdatePhotoInput!): Photo  
 }
 
-type Photo 
- {
-	id: ID!
-	albumId: ID!
-	owner: String
-	uploadTime: AWSDateTime!
-	bucket: String!
-	fullsize: PhotoS3Info
-	thumbnail: PhotoS3Info
-	format: String
-	exifMake: String
-	exitModel: String
-	SfnExecutionArn: String
-	ProcessingStatus: Status
-	objectDetected: [String]
-	geoLocation: GeoCoordinates
-	createdAt: AWSDateTime!
-	updatedAt: AWSDateTime!
-	album: Album
-		
-
+type Photo {
+  ProcessingStatus: Status
+  SfnExecutionArn: String
+  album: Album  
+  albumId: ID!
+  bucket: String!
+  createdAt: AWSDateTime!
+  exifMake: String
+  exitModel: String
+  format: String
+  fullsize: PhotoS3Info
+  geoLocation: GeoCoordinates
+  id: ID!
+  objectDetected: [String]
+  owner: String
+  thumbnail: PhotoS3Info
+  updatedAt: AWSDateTime!
+  uploadTime: AWSDateTime!
 }
 
-type PhotoS3Info 
- {
-	key: String!
-	width: Int
-	height: Int
-}
-
-input PhotoS3InfoInput {
-	key: String!
-	width: Int
-	height: Int
+type PhotoS3Info {
+  height: Int
+  key: String!
+  width: Int
 }
 
 type Query {
-	checkSfnStatus(input: checkSfnStatusInput!): SfnStatusResult
-	listAlbums(filter: ModelAlbumFilterInput, limit: Int, nextToken: String): ModelAlbumConnection
-		
-
-	getAlbum(id: ID!): Album
-		
-
-	getPhoto(id: ID!): Photo
-		
-
-	listPhotos(filter: ModelPhotoFilterInput, limit: Int, nextToken: String): ModelPhotoConnection
-		
-
-	listPhotosByAlbumUploadTime(
-		albumId: ID,
-		uploadTime: ModelStringKeyConditionInput,
-		sortDirection: ModelSortDirection,
-		filter: ModelPhotoFilterInput,
-		limit: Int,
-		nextToken: String
-	): ModelPhotoConnection
-		
-
+  checkSfnStatus(input: checkSfnStatusInput!): SfnStatusResult
+  getAlbum(id: ID!): Album  
+  getPhoto(id: ID!): Photo  
+  listAlbums(filter: ModelAlbumFilterInput, limit: Int, nextToken: String): ModelAlbumConnection  
+  listPhotos(filter: ModelPhotoFilterInput, limit: Int, nextToken: String): ModelPhotoConnection  
+  listPhotosByAlbumUploadTime(albumId: ID, filter: ModelPhotoFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, uploadTime: ModelStringKeyConditionInput): ModelPhotoConnection  
 }
 
 type SfnStatusResult {
-	startDate: Float
-	stopDate: Float
-	status: Status
-}
-
-input StartSfnExecutionInput {
-	input: String!
-	stateMachineArn: String!
+  startDate: Float
+  status: Status
+  stopDate: Float
 }
 
 type StartSfnExecutionResult  {
-	executionArn: String!
-	startDate: Float
+  executionArn: String!
+  startDate: Float
+}
+
+enum GeoCoordinateDirection {
+  E
+  N
+  S
+  W
+}
+
+enum ModelAttributeTypes {
+  _null
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
 }
 
 enum Status {
-	PENDING
-	RUNNING
-	SUCCEEDED
-	FAILED
-	TIMED_OUT
-	ABORTED
+  ABORTED
+  FAILED
+  PENDING
+  RUNNING
+  SUCCEEDED
+  TIMED_OUT
+}
+
+input CreateAlbumInput {
+  id: ID
+  name: String!
+  owner: String
+}
+
+input CreatePhotoInput {
+  ProcessingStatus: Status
+  SfnExecutionArn: String
+  albumId: ID!
+  bucket: String!
+  exifMake: String
+  exitModel: String
+  format: String
+  fullsize: PhotoS3InfoInput
+  geoLocation: GeoCoordinatesInput
+  id: ID
+  objectDetected: [String]
+  owner: String
+  thumbnail: PhotoS3InfoInput
+  uploadTime: AWSDateTime!
+}
+
+input DeleteAlbumInput {
+  id: ID
+}
+
+input DeletePhotoInput {
+  id: ID
+}
+
+input GeoCoordinatesInput {
+  Latitude: LatitudeInput!
+  Longtitude: LongtitudeInput!
+}
+
+input LatitudeInput {
+  D: Float!
+  Direction: GeoCoordinateDirection!
+  M: Float!
+  S: Float!
+}
+
+input LongtitudeInput {
+  D: Float!
+  Direction: GeoCoordinateDirection!
+  M: Float!
+  S: Float!
+}
+
+input ModelAlbumConditionInput {
+  and: [ModelAlbumConditionInput]
+  name: ModelStringInput
+  not: ModelAlbumConditionInput
+  or: [ModelAlbumConditionInput]
+}
+
+input ModelAlbumFilterInput {
+  and: [ModelAlbumFilterInput]
+  id: ModelIDInput
+  name: ModelStringInput
+  not: ModelAlbumFilterInput
+  or: [ModelAlbumFilterInput]
+  owner: ModelStringInput
+}
+
+input ModelBooleanInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  eq: Boolean
+  ne: Boolean
+}
+
+input ModelFloatInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  between: [Float]
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+}
+
+input ModelIDInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+}
+
+input ModelPhotoConditionInput {
+  ProcessingStatus: ModelStatusInput
+  SfnExecutionArn: ModelStringInput
+  albumId: ModelIDInput
+  and: [ModelPhotoConditionInput]
+  bucket: ModelStringInput
+  exifMake: ModelStringInput
+  exitModel: ModelStringInput
+  format: ModelStringInput
+  not: ModelPhotoConditionInput
+  objectDetected: ModelStringInput
+  or: [ModelPhotoConditionInput]
+  uploadTime: ModelStringInput
+}
+
+input ModelPhotoFilterInput {
+  ProcessingStatus: ModelStatusInput
+  SfnExecutionArn: ModelStringInput
+  albumId: ModelIDInput
+  and: [ModelPhotoFilterInput]
+  bucket: ModelStringInput
+  exifMake: ModelStringInput
+  exitModel: ModelStringInput
+  format: ModelStringInput
+  id: ModelIDInput
+  not: ModelPhotoFilterInput
+  objectDetected: ModelStringInput
+  or: [ModelPhotoFilterInput]
+  owner: ModelStringInput
+  uploadTime: ModelStringInput
+}
+
+input ModelSizeInput {
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+}
+
+input ModelStatusInput {
+  eq: Status
+  ne: Status
+}
+
+input ModelStringInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+  size: ModelSizeInput
+}
+
+input ModelStringKeyConditionInput {
+  beginsWith: String
+  between: [String]
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+}
+
+input PhotoS3InfoInput {
+  height: Int
+  key: String!
+  width: Int
+}
+
+input StartSfnExecutionInput {
+  input: String!
+  stateMachineArn: String!
 }
 
 input UpdateAlbumInput {
-	id: ID!
-	name: String
-	owner: String
+  id: ID!
+  name: String
+  owner: String
 }
 
 input UpdatePhotoInput {
-	id: ID!
-	albumId: ID
-	owner: String
-	uploadTime: AWSDateTime
-	bucket: String
-	fullsize: PhotoS3InfoInput
-	thumbnail: PhotoS3InfoInput
-	format: String
-	exifMake: String
-	exitModel: String
-	SfnExecutionArn: String
-	ProcessingStatus: Status
-	objectDetected: [String]
-	geoLocation: GeoCoordinatesInput
+  ProcessingStatus: Status
+  SfnExecutionArn: String
+  albumId: ID
+  bucket: String
+  exifMake: String
+  exitModel: String
+  format: String
+  fullsize: PhotoS3InfoInput
+  geoLocation: GeoCoordinatesInput
+  id: ID!
+  objectDetected: [String]
+  owner: String
+  thumbnail: PhotoS3InfoInput
+  uploadTime: AWSDateTime
 }
 
 input checkSfnStatusInput {
-	executionArn: String!
+  executionArn: String!
 }

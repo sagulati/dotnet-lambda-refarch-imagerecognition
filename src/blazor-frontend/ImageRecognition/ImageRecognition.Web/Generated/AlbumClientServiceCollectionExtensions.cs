@@ -38,7 +38,9 @@ namespace ImageRecognition.Web
                     sp.GetRequiredService<IClientOptions>().GetResultParsers(_clientName)));
 
             IOperationClientBuilder builder = serviceCollection.AddOperationClientOptions(_clientName)
-                .AddResultParser(serializers => new MyQueryResultParser(serializers))
+                .AddValueSerializer(() => new StatusValueSerializer())
+                .AddResultParser(serializers => new GetAlbumResultParser(serializers))
+                .AddResultParser(serializers => new ListAlbumsResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))
                 .AddHttpOperationPipeline(b => b.UseHttpDefaultPipeline());
 

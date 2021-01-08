@@ -6,10 +6,10 @@ using StrawberryShake;
 namespace ImageRecognition.Web
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial class MyQuery
-        : IMyQuery
+    public partial class ListAlbums1
+        : IListAlbums
     {
-        public MyQuery(
+        public ListAlbums1(
             global::ImageRecognition.Web.IModelAlbumConnection? listAlbums)
         {
             ListAlbums = listAlbums;

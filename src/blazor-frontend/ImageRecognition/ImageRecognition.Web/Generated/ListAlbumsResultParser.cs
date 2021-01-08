@@ -11,13 +11,13 @@ using StrawberryShake.Transport;
 namespace ImageRecognition.Web
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial class MyQueryResultParser
-        : JsonResultParserBase<IMyQuery>
+    public partial class ListAlbumsResultParser
+        : JsonResultParserBase<IListAlbums>
     {
         private readonly IValueSerializer _iDSerializer;
         private readonly IValueSerializer _stringSerializer;
 
-        public MyQueryResultParser(IValueSerializerCollection serializerResolver)
+        public ListAlbumsResultParser(IValueSerializerCollection serializerResolver)
         {
             if (serializerResolver is null)
             {
@@ -27,16 +27,16 @@ namespace ImageRecognition.Web
             _stringSerializer = serializerResolver.Get("String");
         }
 
-        protected override IMyQuery ParserData(JsonElement data)
+        protected override IListAlbums ParserData(JsonElement data)
         {
-            return new MyQuery
+            return new ListAlbums1
             (
-                ParseMyQueryListAlbums(data, "listAlbums")
+                ParseListAlbumsListAlbums(data, "listAlbums")
             );
 
         }
 
-        private global::ImageRecognition.Web.IModelAlbumConnection? ParseMyQueryListAlbums(
+        private global::ImageRecognition.Web.IModelAlbumConnection? ParseListAlbumsListAlbums(
             JsonElement parent,
             string field)
         {
@@ -52,11 +52,11 @@ namespace ImageRecognition.Web
 
             return new ModelAlbumConnection
             (
-                ParseMyQueryListAlbumsItems(obj, "items")
+                ParseListAlbumsListAlbumsItems(obj, "items")
             );
         }
 
-        private global::System.Collections.Generic.IReadOnlyList<global::ImageRecognition.Web.IAlbum>? ParseMyQueryListAlbumsItems(
+        private global::System.Collections.Generic.IReadOnlyList<global::ImageRecognition.Web.IAlbum1>? ParseListAlbumsListAlbumsItems(
             JsonElement parent,
             string field)
         {
@@ -71,15 +71,14 @@ namespace ImageRecognition.Web
             }
 
             int objLength = obj.GetArrayLength();
-            var list = new global::ImageRecognition.Web.IAlbum[objLength];
+            var list = new global::ImageRecognition.Web.IAlbum1[objLength];
             for (int objIndex = 0; objIndex < objLength; objIndex++)
             {
                 JsonElement element = obj[objIndex];
-                list[objIndex] = new Album
+                list[objIndex] = new Album1
                 (
                     DeserializeID(element, "id"),
-                    DeserializeString(element, "name"),
-                    DeserializeNullableString(element, "owner")
+                    DeserializeString(element, "name")
                 );
 
             }
@@ -97,21 +96,6 @@ namespace ImageRecognition.Web
         {
             JsonElement value = obj.GetProperty(fieldName);
             return (string)_stringSerializer.Deserialize(value.GetString())!;
-        }
-
-        private string? DeserializeNullableString(JsonElement obj, string fieldName)
-        {
-            if (!obj.TryGetProperty(fieldName, out JsonElement value))
-            {
-                return null;
-            }
-
-            if (value.ValueKind == JsonValueKind.Null)
-            {
-                return null;
-            }
-
-            return (string?)_stringSerializer.Deserialize(value.GetString())!;
         }
     }
 }

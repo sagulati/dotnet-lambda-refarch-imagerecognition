@@ -6,16 +6,16 @@ using StrawberryShake;
 namespace ImageRecognition.Web
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public partial class MyQueryOperation
-        : IOperation<IMyQuery>
+    public partial class ListAlbumsOperation
+        : IOperation<IListAlbums>
     {
-        public string Name => "MyQuery";
+        public string Name => "ListAlbums";
 
         public IDocument Document => Queries.Default;
 
         public OperationKind Kind => OperationKind.Query;
 
-        public Type ResultType => typeof(IMyQuery);
+        public Type ResultType => typeof(IListAlbums);
 
         public IReadOnlyList<VariableValue> GetVariableValues()
         {
