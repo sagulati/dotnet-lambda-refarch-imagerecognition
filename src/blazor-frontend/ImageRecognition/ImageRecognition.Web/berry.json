@@ -1,0 +1,11 @@
+{
+    "Schemas": [
+      {
+        "Name": "Album",
+        "Type": "https",
+        "File": "Album.graphql",
+        "Url": "https://syb6ykx6crfhlfchv5fnss2ekq.appsync-api.us-east-1.amazonaws.com/"
+      }
+    ],
+    "ClientName": "AlbumClient"
+  }

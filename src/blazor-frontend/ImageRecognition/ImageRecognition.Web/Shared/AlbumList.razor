@@ -1,0 +1,30 @@
+@inject IAlbumClient AlbumClient
+
+<div class="ui segment">
+    <h3 class="ui header">My Albums</h3>
+    <div role="list" class="ui divided relaxed list">
+        @foreach (var item in albums)
+        {
+            <div role="listitem" class="item">
+                <a href="/albums/@item.Id">@item.Name</a>
+            </div>
+        }
+        
+    </div>
+</div>
+
+@code {      
+    
+    private IReadOnlyList<IAlbum1> albums = new List<IAlbum1>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await AlbumClient.ListAlbumsAsync();
+
+        if(result?.Data?.ListAlbums?.Items != null)
+        {
+            albums = result.Data.ListAlbums.Items;
+        }
+    }
+
+}

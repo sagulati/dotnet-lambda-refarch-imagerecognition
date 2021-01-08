@@ -3,18 +3,20 @@
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
-        <a href="LogOut">Log out</a>
-    </Authorized>
+        <div class="ui">Hello, @context.User.Claims.FirstOrDefault(x => x.Type == "username").Value</div>
+        <div class="ui"><a href="#" @onclick="BeginSignOut">Log out</a></div>
+</Authorized>
     <NotAuthorized>
-        <a href="Login">Log in</a>
+        <a href="authentication/login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
 
 @code{
+
     private async Task BeginSignOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
