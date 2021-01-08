@@ -39,8 +39,17 @@ namespace ImageRecognition.Web
 
             IOperationClientBuilder builder = serviceCollection.AddOperationClientOptions(_clientName)
                 .AddValueSerializer(() => new StatusValueSerializer())
+                .AddValueSerializer(() => new GeoCoordinateDirectionValueSerializer())
+                .AddValueSerializer(() => new ModelAttributeTypesValueSerializer())
+                .AddValueSerializer(() => new ModelPhotoFilterInputSerializer())
+                .AddValueSerializer(() => new ModelIDInputSerializer())
+                .AddValueSerializer(() => new ModelStringInputSerializer())
+                .AddValueSerializer(() => new ModelStatusInputSerializer())
+                .AddValueSerializer(() => new ModelSizeInputSerializer())
                 .AddResultParser(serializers => new GetAlbumResultParser(serializers))
                 .AddResultParser(serializers => new ListAlbumsResultParser(serializers))
+                .AddResultParser(serializers => new GetPhotoResultParser(serializers))
+                .AddResultParser(serializers => new ListPhotosResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))
                 .AddHttpOperationPipeline(b => b.UseHttpDefaultPipeline());
 

@@ -29,3 +29,87 @@ query ListAlbums{
       }
   }
 }
+
+  query GetPhoto($id: ID!) {
+    getPhoto(id: $id) {
+      id
+      albumId
+      owner
+      bucket
+      fullsize {
+        key
+        width
+        height
+      }
+      thumbnail {
+        key
+        width
+        height
+      }
+      format
+      exifMake
+      exitModel
+      SfnExecutionArn
+      ProcessingStatus
+      objectDetected
+      geoLocation {
+        Latitude {
+          D
+          M
+          S
+          Direction
+        }
+        Longtitude {
+          D
+          M
+          S
+          Direction
+        }
+      }
+      album {
+        id
+        name
+        owner
+        photos {
+          nextToken
+        }
+      }
+    }
+  }
+
+  query ListPhotos(
+    $filter: ModelPhotoFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPhotos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        albumId
+        owner
+        bucket
+        fullsize {
+          key
+          width
+          height
+        }
+        thumbnail {
+          key
+          width
+          height
+        }
+        format
+        exifMake
+        exitModel
+        SfnExecutionArn
+        ProcessingStatus
+        objectDetected
+        album {
+          id
+          name
+          owner
+        }
+      }
+      nextToken
+    }
+  }

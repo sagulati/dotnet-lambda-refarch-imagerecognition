@@ -24,5 +24,23 @@ namespace ImageRecognition.Web
         Task<IOperationResult<global::ImageRecognition.Web.IListAlbums>> ListAlbumsAsync(
             ListAlbumsOperation operation,
             CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<global::ImageRecognition.Web.IGetPhoto>> GetPhotoAsync(
+            Optional<string> id = default,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<global::ImageRecognition.Web.IGetPhoto>> GetPhotoAsync(
+            GetPhotoOperation operation,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<global::ImageRecognition.Web.IListPhotos>> ListPhotosAsync(
+            Optional<global::ImageRecognition.Web.ModelPhotoFilterInput?> filter = default,
+            Optional<int?> limit = default,
+            Optional<string?> nextToken = default,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<global::ImageRecognition.Web.IListPhotos>> ListPhotosAsync(
+            ListPhotosOperation operation,
+            CancellationToken cancellationToken = default);
     }
 }

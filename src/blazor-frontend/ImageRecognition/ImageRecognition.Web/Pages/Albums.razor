@@ -1,0 +1,75 @@
+@page "/albums"
+@attribute [Authorize]
+@using ImageRecognition.Web.Shared;
+
+<div class="ui padded grid">
+    <div class="column">
+        <div class="ui segment">
+            <h3 class="ui header">Sanjay Gulati</h3>
+            <div>
+                <div class="field"><button class="ui button"><i aria-hidden="true"
+                            class="file image outline icon"></i>Add Images</button></div><input
+                    id="add-image-file-input" type="file" accept="image/*" multiple="" style="display: none;">
+            </div>
+            <div>
+                <div class="ui hidden divider"></div>
+                <div class="ui cards">
+                    <div class="ui card">
+                        <div class="center aligned content">
+                            <div>
+                                <div style="position: relative;"><img
+                                        src="https://photo-sharee7fa5f1b25be4c63a81417becda53512182406-devf.s3.amazonaws.com/private/us-east-1%3A91baa4a4-cac0-4d81-8a14-4f84ecd13577/resized/d14a5e84-a39e-4248-840d-29e38ccbe6dc.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Credential=ASIA426VBIF4BDVQ637J%2F20210108%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20210108T182101Z&amp;X-Amz-Expires=900&amp;X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQCls3st93hDByY0bkNlr2eecFaROlXI%2B7Tmw4p458M3nwIhANRGtsSyW68JpumViMPBl5dqWs2%2FHpN4TqKg%2FKcY1RogKsQECGMQARoMODgyNTI1Njg0MDg4Igz7zhRIQxyjO%2Fys6UIqoQR%2BJQNIjaQsGj0AlOI3i6%2FBxm%2B1QhK97xOTLRbjuh7S2OYLGWYoUIN%2B3D6478qGfXVVbtohuyHwAL2cCFIDLrnk2GpqOWCg25VTr870bK6xqr6aOxqLeNhQCgOYTQgpftMOhP%2BRV5hyBfw7ZMGCbZivHKibslN3zxXqqrrdcg30SHlKnGMBfle4%2FEE0bWlBVnXmb%2BNNkbzveQ11bClC2BhkU3w2UcXxOHtxBhVOP3X626Yl9hzVKJi1KrBDxgOpY29EsYY0cZkfEhSXB0B0I1rYSbPKZg6KXYr%2B4rsDWzYnHKtzImaMPU3%2B6iNi7dDDrh7D5np%2BWAzjy%2BYZV4xLDopEvXAjn2TzuyLJdbZD6HrDFtKHp1f1jL1Xk15EojYMvqyszhJmNEfyIi6RPU3VWXS7PQlV6AtmNMlnUarnpsVjJPHvSkZ7gU4bzs5YtxUyl1g0ngFk4N9JHOFlZivaKGSPLvGCQqCzqVtLC7pzBwPPMpXoeUzBP0b8p7%2BuJe82m%2BbN9yBrm2FVSDPuPbQZNUh4eqlAzBvGkTq%2BIWBYFDpb%2F2FBqpw3yzG89FHv6LxJ9Quuz0oenKGLNquFK0IijtIoQRiOmnybJZUHdSzT8Q70TaXY5mwA%2Fcdhpwm%2FS2P8CexJ2gGYv5GPn2thtmx62DEofOZc46Hq1ju0ysc6FN2gaXgbeMAmzisjX9XVFWAgcL2WlGeb4IpSMxcwvDDRMkDE8zDbxOL%2FBTqEApb%2BRnEI%2BZFEcNemgb2Cwdmod6Fb2UF%2B0PeFuoV6jad6UYmUzDEbWei0JwUSMhVGSvf6g4E75wqv9W%2FBlhcmQCZIb0fRIiNPlybY9nL5Ci9hmNWLK0I7KLufVzOWR2146nx%2FSQZKcB6LsZGDMaLeb%2FdHiUhpkjeGo9yoejkPp4tTHPVNq1SGFGMuqcJKpq0tK30IzD0HmTiRfvh%2BoMGNW7OI5%2Bq18Q6hhgju%2BVf74Nbc05Yoa3Vce8wCXvPTqZ4L7oBHeqknTSHyz0rFg2Y25z95SP2ZV%2BuO0LIDSWzB4e6H9bk82ayRtExz8WsZutz4AZ%2F3rzwwTIxrw9Lyd%2BN4vun7Bo%2FY&amp;X-Amz-Signature=04205678ca33e7b101ea37b91508121e915dba71d0a59173afc65fad4c3b0b9b&amp;X-Amz-SignedHeaders=host&amp;x-amz-user-agent=aws-sdk-js-v3-%40aws-sdk%2Fclient-s3%2F1.0.0-gamma.8%20Mozilla%2F5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F87.0.4280.88%20Safari%2F537.36%20aws-amplify%2F3.8.2%20js&amp;x-id=GetObject">
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="meta"><span class="date">Uploaded: 11/19/2020, 11:29:31 AM</span></div>
+                            <div class="description">
+                                <p><b>Detected labels:</b></p>
+                                <div class="ui orange basic label">Moon</div>
+                                <div class="ui orange basic label">Nature</div>
+                                <div class="ui orange basic label">Night</div>
+                                <div class="ui orange basic label">Universe</div>
+                                <div class="ui orange basic label">Astronomy</div>
+                                <div class="ui orange basic label">Outer Space</div>
+                                <div class="ui orange basic label">Outdoors</div>
+                                <div class="ui orange basic label">Planet</div>
+                                <div class="ui orange basic label">Globe</div>
+                                <div class="ui orange basic label">Earth</div>
+                                <p><b>Image size: </b>3000 x 3002</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui card">
+                        <div class="center aligned content">
+                            <div>
+                                <div style="position: relative;"><img
+                                        src="https://photo-sharee7fa5f1b25be4c63a81417becda53512182406-devf.s3.amazonaws.com/private/us-east-1%3A91baa4a4-cac0-4d81-8a14-4f84ecd13577/resized/ad458ab3-34d9-4afd-ade8-7d04231f7d06.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Credential=ASIA426VBIF4BDVQ637J%2F20210108%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20210108T182101Z&amp;X-Amz-Expires=900&amp;X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQCls3st93hDByY0bkNlr2eecFaROlXI%2B7Tmw4p458M3nwIhANRGtsSyW68JpumViMPBl5dqWs2%2FHpN4TqKg%2FKcY1RogKsQECGMQARoMODgyNTI1Njg0MDg4Igz7zhRIQxyjO%2Fys6UIqoQR%2BJQNIjaQsGj0AlOI3i6%2FBxm%2B1QhK97xOTLRbjuh7S2OYLGWYoUIN%2B3D6478qGfXVVbtohuyHwAL2cCFIDLrnk2GpqOWCg25VTr870bK6xqr6aOxqLeNhQCgOYTQgpftMOhP%2BRV5hyBfw7ZMGCbZivHKibslN3zxXqqrrdcg30SHlKnGMBfle4%2FEE0bWlBVnXmb%2BNNkbzveQ11bClC2BhkU3w2UcXxOHtxBhVOP3X626Yl9hzVKJi1KrBDxgOpY29EsYY0cZkfEhSXB0B0I1rYSbPKZg6KXYr%2B4rsDWzYnHKtzImaMPU3%2B6iNi7dDDrh7D5np%2BWAzjy%2BYZV4xLDopEvXAjn2TzuyLJdbZD6HrDFtKHp1f1jL1Xk15EojYMvqyszhJmNEfyIi6RPU3VWXS7PQlV6AtmNMlnUarnpsVjJPHvSkZ7gU4bzs5YtxUyl1g0ngFk4N9JHOFlZivaKGSPLvGCQqCzqVtLC7pzBwPPMpXoeUzBP0b8p7%2BuJe82m%2BbN9yBrm2FVSDPuPbQZNUh4eqlAzBvGkTq%2BIWBYFDpb%2F2FBqpw3yzG89FHv6LxJ9Quuz0oenKGLNquFK0IijtIoQRiOmnybJZUHdSzT8Q70TaXY5mwA%2Fcdhpwm%2FS2P8CexJ2gGYv5GPn2thtmx62DEofOZc46Hq1ju0ysc6FN2gaXgbeMAmzisjX9XVFWAgcL2WlGeb4IpSMxcwvDDRMkDE8zDbxOL%2FBTqEApb%2BRnEI%2BZFEcNemgb2Cwdmod6Fb2UF%2B0PeFuoV6jad6UYmUzDEbWei0JwUSMhVGSvf6g4E75wqv9W%2FBlhcmQCZIb0fRIiNPlybY9nL5Ci9hmNWLK0I7KLufVzOWR2146nx%2FSQZKcB6LsZGDMaLeb%2FdHiUhpkjeGo9yoejkPp4tTHPVNq1SGFGMuqcJKpq0tK30IzD0HmTiRfvh%2BoMGNW7OI5%2Bq18Q6hhgju%2BVf74Nbc05Yoa3Vce8wCXvPTqZ4L7oBHeqknTSHyz0rFg2Y25z95SP2ZV%2BuO0LIDSWzB4e6H9bk82ayRtExz8WsZutz4AZ%2F3rzwwTIxrw9Lyd%2BN4vun7Bo%2FY&amp;X-Amz-Signature=2bd91dd01968cb354c40834a12f7192c1a9d4f2a8f55273d0055725fafb2091c&amp;X-Amz-SignedHeaders=host&amp;x-amz-user-agent=aws-sdk-js-v3-%40aws-sdk%2Fclient-s3%2F1.0.0-gamma.8%20Mozilla%2F5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F87.0.4280.88%20Safari%2F537.36%20aws-amplify%2F3.8.2%20js&amp;x-id=GetObject">
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="meta"><span class="date">Uploaded: 11/19/2020, 11:41:36 AM</span></div>
+                            <div class="description">
+                                <p><b>Detected labels:</b></p>
+                                <div class="ui orange basic label">Nature</div>
+                                <div class="ui orange basic label">Outdoors</div>
+                                <div class="ui orange basic label">Scenery</div>
+                                <div class="ui orange basic label">Mountain</div>
+                                <div class="ui orange basic label">Mountain Range</div>
+                                <div class="ui orange basic label">Grass</div>
+                                <div class="ui orange basic label">Landscape</div>
+                                <div class="ui orange basic label">Land</div>
+                                <div class="ui orange basic label">Field</div>
+                                <div class="ui orange basic label">Grassland</div>
+                                <p><b>Image size: </b>768 x 432</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
