@@ -10,7 +10,7 @@ phases:
     commands:
       - echo Restore started on `date`
       - cd src/blazor-frontend/ImageRecognition
-      - dotnet restore
+      - dotnet restore -p:RestoreUseSkipNonexistentTargets=false -nowarn:msb3202,nu1503
       
   build:
     commands:

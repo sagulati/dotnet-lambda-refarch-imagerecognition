@@ -1,4 +1,4 @@
-@page "/albums"
+@page "/albums/{Id}"
 @attribute [Authorize]
 @using ImageRecognition.Web.Shared;
 
@@ -73,3 +73,8 @@
         </div>
     </div>
 </div>
+
+@code{
+    [Parameter]
+    public string Id {get; set;}
+}
