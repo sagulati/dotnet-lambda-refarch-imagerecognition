@@ -42,5 +42,17 @@ namespace ImageRecognition.Web
         Task<IOperationResult<global::ImageRecognition.Web.IListPhotos>> ListPhotosAsync(
             ListPhotosOperation operation,
             CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<global::ImageRecognition.Web.IListPhotosByAlbumUploadTime>> ListPhotosByAlbumUploadTimeAsync(
+            Optional<string?> albumId = default,
+            Optional<ModelSortDirection?> sortDirection = default,
+            Optional<global::ImageRecognition.Web.ModelPhotoFilterInput?> filter = default,
+            Optional<int?> limit = default,
+            Optional<string?> nextToken = default,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<global::ImageRecognition.Web.IListPhotosByAlbumUploadTime>> ListPhotosByAlbumUploadTimeAsync(
+            ListPhotosByAlbumUploadTimeOperation operation,
+            CancellationToken cancellationToken = default);
     }
 }

@@ -121,5 +121,38 @@ namespace ImageRecognition.Web
 
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::ImageRecognition.Web.IListPhotosByAlbumUploadTime>> ListPhotosByAlbumUploadTimeAsync(
+            global::StrawberryShake.Optional<string?> albumId = default,
+            global::StrawberryShake.Optional<ModelSortDirection?> sortDirection = default,
+            global::StrawberryShake.Optional<global::ImageRecognition.Web.ModelPhotoFilterInput?> filter = default,
+            global::StrawberryShake.Optional<int?> limit = default,
+            global::StrawberryShake.Optional<string?> nextToken = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+
+            return _executor.ExecuteAsync(
+                new ListPhotosByAlbumUploadTimeOperation
+                {
+                    AlbumId = albumId, 
+                    SortDirection = sortDirection, 
+                    Filter = filter, 
+                    Limit = limit, 
+                    NextToken = nextToken
+                },
+                cancellationToken);
+        }
+
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::ImageRecognition.Web.IListPhotosByAlbumUploadTime>> ListPhotosByAlbumUploadTimeAsync(
+            ListPhotosByAlbumUploadTimeOperation operation,
+            global::System.Threading.CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
     }
 }

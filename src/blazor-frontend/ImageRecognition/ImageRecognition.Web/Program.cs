@@ -37,6 +37,8 @@ namespace ImageRecognition.Web
 
             builder.Services.AddScoped<ImageRecognition.Web.Models.AuthorizationMessageHandler>();
 
+            builder.Services.AddScoped<ImageRecognition.Web.Models.S3Hander>();
+
             builder.Services.AddHttpClient(
                 "AlbumClient", 
                 (services, client) =>

@@ -112,4 +112,58 @@ query ListAlbums{
       }
       nextToken
     }
+  },
+
+  query ListPhotosByAlbumUploadTime(
+    $albumId: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelPhotoFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPhotosByAlbumUploadTime(
+      albumId: $albumId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        albumId
+        owner
+        bucket
+        fullsize {
+          key
+          width
+          height
+        }
+        thumbnail {
+          key
+          width
+          height
+        }
+        format
+        exifMake
+        exitModel
+        SfnExecutionArn
+        ProcessingStatus
+        objectDetected
+        geoLocation {
+          Latitude {
+            D
+            M
+            S
+            Direction
+          }
+          Longtitude {
+            D
+            M
+            S
+            Direction
+          }
+        }
+      }
+      nextToken
+    }
   }
