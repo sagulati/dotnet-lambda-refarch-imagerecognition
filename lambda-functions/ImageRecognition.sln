@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "store-image-metadata", "sto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "thumbnail", "thumbnail\thumbnail.csproj", "{D5191857-9E4B-4F3F-9254-DECAA993560E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "trasnform-metadata", "trasnform-metadata\trasnform-metadata.csproj", "{2D2275BB-62EE-4DA4-AEFC-309C1C5D08B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "transform-metadata", "trasnform-metadata\transform-metadata.csproj", "{2D2275BB-62EE-4DA4-AEFC-309C1C5D08B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A7434C59-F0A5-4198-993E-49C56A47D006}"
 	ProjectSection(SolutionItems) = preProject

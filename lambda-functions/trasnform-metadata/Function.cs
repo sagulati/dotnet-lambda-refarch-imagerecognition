@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Amazon.Lambda.Core;
+using Common;
+using SixLabors.ImageSharp.Metadata;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -19,9 +21,16 @@ namespace trasnform_metadata
         /// <param name="input"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public Casing FunctionHandler(string input, ILambdaContext context)
+        public async Task<State> FunctionHandler(State state, ILambdaContext context)
         {
-            return new Casing(input?.ToLower(), input?.ToUpper());
+            // extract geo location from Metadata.
+
+            // extract exifMake from Metadata
+
+            // remove existing metadata.
+            state.ImageMetadata = null;
+
+            return state;
         }
     }
 

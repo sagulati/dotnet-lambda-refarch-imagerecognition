@@ -13,4 +13,7 @@
     <PackageReference Include="AWSSDK.S3" Version="3.7.0.9" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
 </Project>

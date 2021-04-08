@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SixLabors.ImageSharp.Metadata;
+using System;
 
 namespace Common
 {
@@ -6,13 +7,25 @@ namespace Common
     {
         public long Id { get; set; }
 
-        public string ImageFormat { get; set; }
+        public string Format { get; set; }
+
+        public decimal OrignalImagePixelCount { get; set; }
+
+        public long Size { get; set; }
+
+        public ImageMetadata ImageMetadata { get; set; }
 
         public ImageSize FullSize { get; set; }
 
         public ImageSize ThumbnailSize { get; set; }
 
         public string ProcessingStatus { get; set; }
+
+        public string ExifMake { get; set; }
+        
+        public string ExifModel { get; set; }
+
+        public GeoLocation Geo { get; set; }
 
         /// <summary>
         /// Objects detected by AWS Rekognition API
