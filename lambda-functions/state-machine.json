@@ -6,7 +6,7 @@
       "Type": "Task",
       "Resource": "${ExtractImageMetadataFunction}",
       "InputPath": "$",
-      "ResultPath": "$",
+      "ResultPath": "$.extractedMetadata",
       "Next": "ImageTypeCheck",
       "Catch": [
         {
@@ -39,11 +39,11 @@
         {
           "Or": [
             {
-              "Variable": "$.format",
+              "Variable": "$.extractedMetadata.format",
               "StringEquals": "JPEG"
             },
             {
-              "Variable": "$.format",
+              "Variable": "$.extractedMetadata.format",
               "StringEquals": "PNG"
             }
           ],
@@ -55,8 +55,8 @@
     "TransformMetadata": {
       "Type": "Task",
       "Resource": "${TransformMetadataFunction}",
-      "InputPath": "$",
-      "ResultPath": "$",
+      "InputPath": "$.extractedMetadata",
+      "ResultPath": "$.extractedMetadata",
       "Retry": [
         {
           "ErrorEquals": [

@@ -6,8 +6,8 @@ namespace Common
 {
     public class GeoLocation
     {
-        public string Latitude { get; set; }
+        public Coordinate Latitude { get; set; }
 
-        public string Longitude { get; set; }
+        public Coordinate Longitude { get; set; }
     }
 }

@@ -9,7 +9,6 @@ using Amazon.Lambda.Core;
 using Amazon.S3;
 using Common;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Metadata;
 using SixLabors.ImageSharp.Formats;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -27,39 +26,36 @@ namespace extract_image_metadata
         }
 
         /// <summary>
-        /// A simple function that takes a string and returns both the upper and lower case version of the string.
+        /// A simple function that takes a s3 bucket input and extract metadata of Image.
         /// </summary>
         /// <param name="input"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public async Task<State> FunctionHandler(State state, ILambdaContext context)
+        public async Task<ImageMetadata> FunctionHandler(ExecutionInput state, ILambdaContext context)
         {
             var tmpPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(state.SourceKey));
             try
             {
-                context.Logger.LogLine("Saving image to tmp");
+                ImageMetadata metadata = new ImageMetadata(); 
                 using (var response = await S3Client.GetObjectAsync(state.Bucket, state.SourceKey))
                 {
                     IImageFormat format;
-                    //context.Logger.LogLine($"Loading image {tmpPath}. File size {new FileInfo(tmpPath).Length}");
+                    
                     using (var sourceImage = Image.Load(response.ResponseStream, out format))
                     {
-                        state.ImageMetadata = sourceImage.Metadata;
+                        metadata.OrignalImagePixelCount = sourceImage.Width * sourceImage.Height;
 
-                        state.OrignalImagePixelCount = sourceImage.Width * sourceImage.Height;
+                        metadata.Width = sourceImage.Width;
 
-                        state.FullSize = new ImageSize()
-                        {
-                            Height = sourceImage.Height,
-                            Width = sourceImage.Width,
-                            Size = state.Size,
-                            Key = state.SourceKey
-                        };
-                        state.Format = format.Name;
+                        metadata.Height = sourceImage.Height;
+
+                        metadata.ExifProfile = sourceImage.Metadata.ExifProfile;
+
+                        metadata.Format = format.Name;
                     }
                 }
 
-                return state;
+                return metadata;
             }
             finally
             {
