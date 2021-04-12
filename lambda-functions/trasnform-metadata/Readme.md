@@ -26,15 +26,15 @@ FROM ecr.aws/lambda/dotnet:5.0 AS base
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim as build
 WORKDIR /src
-COPY ["trasnform-metadata.csproj", "trasnform-metadata/"]
-RUN dotnet restore "trasnform-metadata/trasnform-metadata.csproj"
+COPY ["transform-metadata.csproj", "transform-metadata/"]
+RUN dotnet restore "transform-metadata/transform-metadata.csproj"
 
-WORKDIR "/src/trasnform-metadata"
+WORKDIR "/src/transform-metadata"
 COPY . .
-RUN dotnet build "trasnform-metadata.csproj" --configuration Release --output /app/build
+RUN dotnet build "transform-metadata.csproj" --configuration Release --output /app/build
 
 FROM build AS publish
-RUN dotnet publish "trasnform-metadata.csproj" \
+RUN dotnet publish "transform-metadata.csproj" \
             --configuration Release \ 
             --runtime linux-x64 \
             --self-contained false \ 
@@ -83,12 +83,12 @@ dotnet tool update -g Amazon.Lambda.Tools
 
 Execute unit tests
 ```
-cd "trasnform-metadata/test/trasnform-metadata.Tests"
+cd "transform-metadata/test/transform-metadata.Tests"
 dotnet test
 ```
 
 Deploy function to AWS Lambda
 ```
-cd "trasnform-metadata/src/trasnform-metadata"
+cd "transform-metadata/src/transform-metadata"
 dotnet lambda deploy-function
 ```

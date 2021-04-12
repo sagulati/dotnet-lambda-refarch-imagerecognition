@@ -12,8 +12,8 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-
+//[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+[assembly: LambdaSerializer(typeof(NewtonJsonSerializer))]
 namespace extract_image_metadata
 {
     public class Function

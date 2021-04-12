@@ -23,6 +23,10 @@ namespace extract_image_metadata
 
         public long Size { get; set; }
 
+        //public IReadOnlyCollection<IExifValue> ExifProfile { get; set; }
+
+        public string ExifProfileBase64 => Convert.ToBase64String(ExifProfile.ToByteArray());
+
         public ExifProfile ExifProfile { get; set; }
     }
 }

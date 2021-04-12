@@ -26,6 +26,6 @@ namespace transform_metadata
 
         public long Size { get; set; }
 
-        public ExifProfile ExifProfile { get; set; }
+        public string ExifProfileBase64 { get; set; }
     }
 }

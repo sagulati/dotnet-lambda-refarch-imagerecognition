@@ -10,8 +10,8 @@ using SixLabors.ImageSharp.Metadata;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-
+//[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+[assembly: LambdaSerializer(typeof(NewtonJsonSerializer))]
 namespace transform_metadata
 {
     public class Function
@@ -25,6 +25,8 @@ namespace transform_metadata
         /// <returns></returns>
         public TransformedMetadata FunctionHandler(ImageMetadata extractedMetadata, ILambdaContext context)
         {
+            ExifProfile exifProfile = new ExifProfile(Convert.FromBase64String(extractedMetadata.ExifProfileBase64));
+
             TransformedMetadata transformedMetadata = new TransformedMetadata()
             {
                 CreationTime = DateTime.Now,
@@ -34,20 +36,19 @@ namespace transform_metadata
                     Height = extractedMetadata.Height,
                     Width = extractedMetadata.Width
                 },
-                Geo = ExtractGeoLocation(extractedMetadata),
-                ExifMake = extractedMetadata.ExifProfile?.GetValue(ExifTag.Make)?.Value,
-                ExifModel = extractedMetadata.ExifProfile?.GetValue(ExifTag.Model)?.Value,
+
+                Geo = ExtractGeoLocation(exifProfile),
+                ExifMake = exifProfile?.GetValue(ExifTag.Make)?.Value,
+                ExifModel = exifProfile?.GetValue(ExifTag.Model)?.Value,
                 FileSize = extractedMetadata.Size
             };
             
             return transformedMetadata;
         }
 
-        private GeoLocation ExtractGeoLocation(ImageMetadata extractedMetadata)
+        private GeoLocation ExtractGeoLocation(ExifProfile exifProfile)
         {
-            ExifProfile exifProfile = extractedMetadata.ExifProfile;
-            
-            if (exifProfile?.GetValue(ExifTag.GPSDestLatitude) == null)
+            if (exifProfile?.GetValue(ExifTag.GPSLatitude) == null)
             {
                 // no GPS exifProfile found.
                 return null;
@@ -55,11 +56,11 @@ namespace transform_metadata
 
             GeoLocation geo = new GeoLocation()
             {
-                Latitude = ParseCoordinate(exifProfile.GetValue(ExifTag.GPSDestLatitudeRef).Value,
-                                        exifProfile.GetValue(ExifTag.GPSLongitude).Value),
+                Latitude = ParseCoordinate(exifProfile.GetValue(ExifTag.GPSLatitudeRef)?.Value,
+                                        exifProfile.GetValue(ExifTag.GPSLongitude)?.Value),
 
-                Longitude = ParseCoordinate(exifProfile.GetValue(ExifTag.GPSDestLongitudeRef).Value,
-                                        exifProfile.GetValue(ExifTag.GPSLongitude).Value)
+                Longitude = ParseCoordinate(exifProfile.GetValue(ExifTag.GPSLongitudeRef)?.Value,
+                                        exifProfile.GetValue(ExifTag.GPSLongitude)?.Value)
             };
 
             return geo;
