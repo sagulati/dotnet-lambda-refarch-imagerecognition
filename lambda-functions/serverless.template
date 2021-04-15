@@ -1,0 +1,69 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Transform": "AWS::Serverless-2016-10-31",
+    "Description": "Defines an AWS Step Functions state machine, together with the Lambda functions used as tasks when the state machine runs. See state-machine.json for the actual machine definition.",
+
+    "Parameters": {
+    },
+
+    "Resources": {
+
+        "ExtractImageMetadataFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Description" : "",
+            "Properties": {
+                "PackageType": "Image",
+                "ImageConfig": {
+                    "EntryPoint": [
+                        "/lambda-entrypoint.sh"
+                    ],
+                    "Command": [
+                        "extract-image-metadata::extract_image_metadata.Function::FunctionHandler"
+                    ]
+                    },
+                "Role": {
+                    "Fn::GetAtt": [
+                        "LambdaRole",
+                        "Arn"
+                    ]
+                },
+                "MemorySize": 512,
+                "Timeout": 30
+            },
+            "Metadata": {
+                "Dockerfile": "extract-image-metadata/Dockerfile",
+                "DockerContext": ".",
+                "DockerTag": ""
+            }
+        },
+
+        "LambdaRole": {
+            "Type": "AWS::IAM::Role",
+            "Description" : "",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Action": [
+                                "sts:AssumeRole"
+                            ],
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+                    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+                    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+                ]
+            }
+        }
+    }
+   
+}
