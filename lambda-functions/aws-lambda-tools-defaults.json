@@ -14,6 +14,7 @@
     "template": "serverless.template",
     "template-parameters": "",
     "stack-name": "image-recognition-lambda-functions",
+    "template-substitutions": "$.Resources.StateMachine.Properties.DefinitionString.Fn::Sub=state-machine.json",
     "s3-prefix": "image-recognition/lambda-functions",
     "s3-bucket": "dotnet-image-recognition"
   }

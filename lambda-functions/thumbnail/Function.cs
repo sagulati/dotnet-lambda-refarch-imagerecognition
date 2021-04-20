@@ -30,8 +30,6 @@ namespace thumbnail
             this.S3Client = new AmazonS3Client();
         }
 
-
-
         /// <summary>
         /// A simple function that takes a string and returns both the upper and lower case version of the string.
         /// </summary>
