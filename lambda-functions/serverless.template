@@ -6,7 +6,7 @@
     "Parameters": {
         "PhotoRepoS3Bucket": {
             "Type" : "String",
-            "Description": "s3 bucket for photo uploads"
+            "Description": "s3 bucket for photo uploads",
             "Default" : "photo-sharee7fa5f1b25be4c63a81417becda53512182406-devf"
         },
         "GraphQLEndPoint": {
@@ -27,59 +27,40 @@
     },
 
     "Resources": {
-
-        "ExtractImageMetadataFunction": {
-            "Type": "AWS::Lambda::Function",
-            "Description" : "Extract image metadata such as format, size, geolocation, etc.",
-            "Properties": {
-                "PackageType": "Image",
-                "ImageConfig": {
-                    "EntryPoint": [
-                        "/lambda-entrypoint.sh"
-                    ],
-                    "Command": [
-                        "extract-image-metadata::extract_image_metadata.Function::FunctionHandler"
-                    ]
-                },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "LambdaRole",
-                        "Arn"
-                    ]
-                },
-                "MemorySize": 1024,
-                "Timeout": 200
-            },
-            "Metadata": {
-                "Dockerfile": "extract-image-metadata/Dockerfile",
-                "DockerContext": ".",
-                "DockerTag": ""
-            }
-        },
         "TransformMetadataFunction": {
             "Type": "AWS::Lambda::Function",
             "Description" : "massages JSON of extracted image metadata",
             "Properties": {
                 "PackageType": "Image",
-                "Role": {
-                    "Fn::GetAtt": [
-                        "LambdaRole",
-                        "Arn"
-                    ]
-                },
-                "ImageConfig": {
-                    "EntryPoint": [
-                        "/lambda-entrypoint.sh"
-                    ],
-                    "Command": [
-                        "transform-metadata::transform-metadata.Function::FunctionHandler"
-                    ]
-                },
+                "Role": { "Fn::GetAtt": ["LambdaRole", "Arn"] },
+                "ImageConfig": { "Command": [ "transform-metadata::transform_metadata.Function::FunctionHandler" ]},
                 "MemorySize": 256,
-                "Timeout": 60
+                "Timeout": 60,
+                "Code": {
+                    "ImageUri": "./transform-metadata",
+                }
             },
             "Metadata": {
-                "Dockerfile": "transform-metadata/Dockerfile",
+                "Dockerfile": "Dockerfile",
+                "DockerContext": ".",
+                "DockerTag": ""
+            }
+        },
+        "ExtractImageMetadataFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Description" : "Extract image metadata such as format, size, geolocation, etc.",
+            "Properties": {
+                "PackageType": "Image",
+                "ImageConfig": { "Command": [ "extract-image-metadata::extract_image_metadata.Function::FunctionHandler" ]},
+                "Role": { "Fn::GetAtt": ["LambdaRole", "Arn"] },
+                "MemorySize": 1024,
+                "Timeout": 200,
+                "Code": {
+                    "ImageUri": "./extract-image-metadata"
+                }
+            },
+            "Metadata": {
+                "Dockerfile": "Dockerfile",
                 "DockerContext": ".",
                 "DockerTag": ""
             }
@@ -89,24 +70,15 @@
             "Description" : "Store image metadata into database",
             "Properties": {
                 "PackageType": "Image",
-                "Role": {
-                    "Fn::GetAtt": [
-                        "LambdaRole",
-                        "Arn"
-                    ]
-                },
-                "ImageConfig": {
-                    "EntryPoint": [
-                        "/lambda-entrypoint.sh"
-                    ],
-                    "Command": [
-                        "store-image-metadata::store-image-metadata.Function::FunctionHandler"
-                    ]
-                },
-                "MemorySize": 512
+                "ImageConfig": { "Command": [ "store-image-metadata::store_image_metadata.Function::FunctionHandler" ]},
+                "Role": { "Fn::GetAtt": ["LambdaRole", "Arn"] },
+                "MemorySize": 512,
+                "Code": {
+                    "ImageUri": "./store-image-metadata"
+                }
             },
             "Metadata": {
-                "Dockerfile": "store-image-metadata/Dockerfile",
+                "Dockerfile": "Dockerfile",
                 "DockerContext": ".",
                 "DockerTag": ""
             }
@@ -116,24 +88,15 @@
             "Description" : "Use Amazon Rekognition to detect labels from image",
             "Properties": {
                 "PackageType": "Image",
-                "ImageConfig": {
-                    "EntryPoint": [
-                        "/lambda-entrypoint.sh"
-                    ],
-                    "Command": [
-                        "rekognition::rekognition.Function::FunctionHandler"
-                    ]
-                    },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "LambdaRole",
-                        "Arn"
-                    ]
-                },
-                "MemorySize": 256
+                "ImageConfig": { "Command": [ "rekognition::rekognition.Function::FunctionHandler" ]},
+                "Role": { "Fn::GetAtt": ["RekognitionFunctionRole", "Arn"] },
+                "MemorySize": 256,
+                "Code": {
+                    "ImageUri": "./rekognition"
+                }
             },
             "Metadata": {
-                "Dockerfile": "rekognition/Dockerfile",
+                "Dockerfile": "Dockerfile",
                 "DockerContext": ".",
                 "DockerTag": ""
             }
@@ -143,29 +106,21 @@
             "Description" : "Generate thumbnails for images",
             "Properties": {
                 "PackageType": "Image",
-                "ImageConfig": {
-                    "EntryPoint": [
-                        "/lambda-entrypoint.sh"
-                    ],
-                    "Command": [
-                        "thumbnail::thumbnail.Function::FunctionHandler"
-                    ]
-                    },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "LambdaRole",
-                        "Arn"
-                    ]
-                },
+                "ImageConfig": { "Command": [ "thumbnail::thumbnail.Function::FunctionHandler" ]},
+                "Role": { "Fn::GetAtt": ["LambdaRole", "Arn"] },
                 "MemorySize": 1536,
-                "Timeout": 300
+                "Timeout": 300,
+                 "Code": {
+                    "ImageUri": "./thumbnail"
+                }
             },
             "Metadata": {
-                "Dockerfile": "thumbnail/Dockerfile",
+                "Dockerfile": "Dockerfile",
                 "DockerContext": ".",
                 "DockerTag": ""
             }
         },
+        
         "StateMachine": {
             "Type": "AWS::StepFunctions::StateMachine",
             "Description" : "",
@@ -181,6 +136,55 @@
                 }
             }
         },
+
+        "RekognitionFunctionRole": {
+            "Type": "AWS::IAM::Role",
+            "Description" : "",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Action": [
+                                "sts:AssumeRole"
+                            ],
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "StepFunctionLambdaInvoke",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "s3:GetObject",
+                                        "s3:ListBucket",
+                                        "s3:GetBucketLocation",
+                                        "s3:GetObjectVersion",
+                                        "s3:GetLifecycleConfiguration",
+                                        "rekognition:DetectFaces",
+                                        "rekognition:DetectLabels",
+                                        "rekognition:DetectModerationLabels",
+                                        "rekognition:DetectText"
+                                    ],
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+
         "LambdaRole": {
             "Type": "AWS::IAM::Role",
             "Description" : "",

@@ -15,7 +15,6 @@ using SixLabors.ImageSharp.Processing;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-
 namespace thumbnail
 {
     public class Function
@@ -36,9 +35,9 @@ namespace thumbnail
         /// <param name="input"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public async Task<ThumbnailInfo> FunctionHandler(TransformedMetadata input, ILambdaContext context)
+        public async Task<ThumbnailInfo> FunctionHandler(Input input, ILambdaContext context)
         {
-            Dimensions size = input.Dimensions;
+            Dimensions size = input.ExtractedMetadata.Dimensions;
 
             decimal scalingFactor = Math.Min(
               MAX_WIDTH / size.Width,

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace thumbnail
 {
-    public class TransformedMetadata : ExecutionInput
+    public class TransformedMetadata
     {
         public GeoLocation Geo { get; set; }
 
