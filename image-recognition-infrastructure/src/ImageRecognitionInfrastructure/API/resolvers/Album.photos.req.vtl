@@ -1,0 +1,76 @@
+#set( $limit = $util.defaultIfNull($context.args.limit, 100) )
+#set( $query = {
+  "expression": "#partitionKey = :partitionKey",
+  "expressionNames": {
+      "#partitionKey": "albumId"
+  },
+  "expressionValues": {
+      ":partitionKey": {
+          "S": "$context.source.id"
+    }
+  }
+} )
+## [Start] Applying Key Condition **
+#if( !$util.isNull($ctx.args.uploadTime) && !$util.isNull($ctx.args.uploadTime.beginsWith) )
+  #set( $query.expression = "$query.expression AND begins_with(#sortKey, :sortKey)" )
+  $util.qr($query.expressionNames.put("#sortKey", "uploadTime"))
+  $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.uploadTime.beginsWith" }))
+#end
+#if( !$util.isNull($ctx.args.uploadTime) && !$util.isNull($ctx.args.uploadTime.between) )
+  #set( $query.expression = "$query.expression AND #sortKey BETWEEN :sortKey0 AND :sortKey1" )
+  $util.qr($query.expressionNames.put("#sortKey", "uploadTime"))
+  $util.qr($query.expressionValues.put(":sortKey0", { "S": "$ctx.args.uploadTime.between[0]" }))
+  $util.qr($query.expressionValues.put(":sortKey1", { "S": "$ctx.args.uploadTime.between[1]" }))
+#end
+#if( !$util.isNull($ctx.args.uploadTime) && !$util.isNull($ctx.args.uploadTime.eq) )
+  #set( $query.expression = "$query.expression AND #sortKey = :sortKey" )
+  $util.qr($query.expressionNames.put("#sortKey", "uploadTime"))
+  $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.uploadTime.eq" }))
+#end
+#if( !$util.isNull($ctx.args.uploadTime) && !$util.isNull($ctx.args.uploadTime.lt) )
+  #set( $query.expression = "$query.expression AND #sortKey < :sortKey" )
+  $util.qr($query.expressionNames.put("#sortKey", "uploadTime"))
+  $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.uploadTime.lt" }))
+#end
+#if( !$util.isNull($ctx.args.uploadTime) && !$util.isNull($ctx.args.uploadTime.le) )
+  #set( $query.expression = "$query.expression AND #sortKey <= :sortKey" )
+  $util.qr($query.expressionNames.put("#sortKey", "uploadTime"))
+  $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.uploadTime.le" }))
+#end
+#if( !$util.isNull($ctx.args.uploadTime) && !$util.isNull($ctx.args.uploadTime.gt) )
+  #set( $query.expression = "$query.expression AND #sortKey > :sortKey" )
+  $util.qr($query.expressionNames.put("#sortKey", "uploadTime"))
+  $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.uploadTime.gt" }))
+#end
+#if( !$util.isNull($ctx.args.uploadTime) && !$util.isNull($ctx.args.uploadTime.ge) )
+  #set( $query.expression = "$query.expression AND #sortKey >= :sortKey" )
+  $util.qr($query.expressionNames.put("#sortKey", "uploadTime"))
+  $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.uploadTime.ge" }))
+#end
+## [End] Applying Key Condition **
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query":   $util.toJson($query),
+  "scanIndexForward":   #if( $context.args.sortDirection )
+    #if( $context.args.sortDirection == "ASC" )
+true
+    #else
+false
+    #end
+  #else
+true
+  #end,
+  "filter":   #if( $context.args.filter )
+$util.transform.toDynamoDBFilterExpression($ctx.args.filter)
+  #else
+null
+  #end,
+  "limit": $limit,
+  "nextToken":   #if( $context.args.nextToken )
+$util.toJson($context.args.nextToken)
+  #else
+null
+  #end,
+  "index": "byAlbumUploadTime"
+}
