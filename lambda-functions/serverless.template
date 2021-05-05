@@ -12,7 +12,7 @@
         "GraphQLEndPoint": {
             "Type" : "String",
             "Description": "graph QL endpoint",
-            "Default" : ""
+            "Default" : "https://v35urcizvvaapoe6uumkqjz5em.appsync-api.us-east-1.amazonaws.com/graphql"
         },
         "GraphQLAPIId": {
             "Type" : "String",
@@ -38,7 +38,7 @@
                 "Timeout": 60,
                 "Code": {
                     "ImageUri": "./transform-metadata",
-                }
+                },
             },
             "Metadata": {
                 "Dockerfile": "Dockerfile",
@@ -75,7 +75,13 @@
                 "MemorySize": 512,
                 "Code": {
                     "ImageUri": "./store-image-metadata"
-                }
+                },
+                "Environment": [
+                    {
+                        "Name" : "GraphQLEndPoint",
+                        "Value" : {"Ref": "GraphQLEndPoint"}
+                    }
+                ]
             },
             "Metadata": {
                 "Dockerfile": "Dockerfile",
