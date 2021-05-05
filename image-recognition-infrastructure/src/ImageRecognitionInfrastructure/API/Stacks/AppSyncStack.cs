@@ -14,7 +14,7 @@ namespace ImageRecognitionInfrastructure
 
         internal const string GRAPHQL_API_END_POINT_EXPORT = "GraphQLAPIEndpointOutput";
 
-        public BuildAppSyncStack(Construct scope, string id="Image-Recognition-AppSync-Env-Stack", IStackProps props = null) : base(scope, id, props)
+        public BuildAppSyncStack(Construct scope, string id="Image-Recognition-1-AppSync-Env-Stack", IStackProps props = null) : base(scope, id, props)
         {
             //TODO: Add Authentication.
             try{

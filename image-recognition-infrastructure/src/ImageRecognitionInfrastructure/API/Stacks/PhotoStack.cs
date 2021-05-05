@@ -18,7 +18,7 @@ namespace ImageRecognitionInfrastructure
         internal const string PHOTO_TABLE_NAME_EXPORT = "PhotoTableName";
 
 
-        internal BuildPhotoStack(Construct scope, string id = "Image-Recognition-Photo-Stack", IStackProps props = null) : base(scope, id, props)
+        internal BuildPhotoStack(Construct scope, string id = "Image-Recognition-3-Photo-Stack", IStackProps props = null) : base(scope, id, props)
         {
             try
             {
@@ -117,6 +117,12 @@ namespace ImageRecognitionInfrastructure
                     ResponseMappingTemplate = MappingTemplate.FromFile("src/ImageRecognitionInfrastructure/API/resolvers/Subscription.onDeletePhoto.res.vtl"),
                 });
 
+                photoTableDataSource.CreateResolver(new ExtendedResolverProps{
+                    TypeName = "Album",
+                    FieldName = "photos",
+                    RequestMappingTemplate = MappingTemplate.FromFile("src/ImageRecognitionInfrastructure/API/resolvers/Album.photos.req.vtl"),
+                    ResponseMappingTemplate = MappingTemplate.FromFile("src/ImageRecognitionInfrastructure/API/resolvers/Album.photos.res.vtl")
+                });
 
                 new CfnOutput(this, "PhotoTableStreamArn", new CfnOutputProps
                 {

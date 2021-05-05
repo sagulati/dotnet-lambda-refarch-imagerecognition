@@ -11,16 +11,17 @@ namespace ImageRecognitionInfrastructure
         {
             var app = new App();
             
-            Stack[] stacks = {
-                new BuildAppSyncStack(app),
-                new BuildAlbumStack(app),
-                new BuildPhotoStack(app)
-            };
+            //Stack[] stacks = {
+                new BuildAppSyncStack(app);
+                new BuildAlbumStack(app);
+                new BuildPhotoStack(app);
+                new BuildCustomResourceStack(app);
+            //};
 
-            var stackNames = stacks.Select(stack => stack.StackName);
-            string allStackNames = string.Join("\", \"", stackNames);
+            // var stackNames = stacks.Select(stack => stack.StackName);
+            // string allStackNames = string.Join("\", \"", stackNames);
 
-            Console.WriteLine($"Stacks that can be deployed: \"{allStackNames}\".");
+            // Console.WriteLine($"Stacks that can be deployed: \"{allStackNames}\".");
 
             app.Synth();
         }

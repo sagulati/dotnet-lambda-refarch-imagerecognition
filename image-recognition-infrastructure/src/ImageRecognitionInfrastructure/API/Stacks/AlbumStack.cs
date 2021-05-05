@@ -18,7 +18,7 @@ namespace ImageRecognitionInfrastructure
         internal const string ALBUM_TABLE_NAME_EXPORT = "AlbumTableName";
 
 
-        internal BuildAlbumStack(Construct scope, string id="Image-Recognition-Album-Stack", IStackProps props = null) : base(scope, id, props)
+        internal BuildAlbumStack(Construct scope, string id="Image-Recognition-2-Album-Stack", IStackProps props = null) : base(scope, id, props)
         {
             try{
                 var albumTable = new Table(this, "AlbumTable", new TableProps {
@@ -89,6 +89,12 @@ namespace ImageRecognitionInfrastructure
                     ResponseMappingTemplate = MappingTemplate.FromFile("src/ImageRecognitionInfrastructure/API/resolvers/Subscription.onDeleteAlbum.res.vtl"),
                 });
 
+                albumTableDataSource.CreateResolver(new ExtendedResolverProps{
+                    TypeName = "Photo",
+                    FieldName = "album",
+                    RequestMappingTemplate = MappingTemplate.FromFile("src/ImageRecognitionInfrastructure/API/resolvers/Photo.album.req.vtl"),
+                    ResponseMappingTemplate = MappingTemplate.FromFile("src/ImageRecognitionInfrastructure/API/resolvers/Photo.album.res.vtl")
+                });
 
                 new CfnOutput(this, "AlbumTableStreamArn", new CfnOutputProps{
                     Value = albumTable.TableStreamArn,
