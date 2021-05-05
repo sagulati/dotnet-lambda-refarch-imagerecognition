@@ -23,8 +23,6 @@ namespace store_image_metadata
 
     public static class GraphQLHttpClientOptionsExtension
     {
-        private static Credentials cachedCredentials = null;
-
         public async static Task<GraphQLHttpClientOptions> ConfigureAppSync(
             this GraphQLHttpClientOptions options,
             string graphQlEndpoint,
@@ -35,7 +33,7 @@ namespace store_image_metadata
             // set GraphQL endpoint
             options.EndPoint = new Uri(graphQlEndpoint);
 
-            var tempCredentials = await GetTemporaryCredentialsAsync();
+            ImmutableCredentials tempCredentials = await FallbackCredentialsFactory.GetCredentials().GetCredentialsAsync();
 
             //set pre-processor to add authentication HTTP header to request
             options.PreprocessRequest = (request, client) =>
@@ -44,31 +42,6 @@ namespace store_image_metadata
             };
 
             return options;
-        }
-
-        private static async Task<Credentials> GetTemporaryCredentialsAsync()
-        {
-            if (cachedCredentials != null)
-            {
-                return cachedCredentials;
-            }
-
-            using (var stsClient = new AmazonSecurityTokenServiceClient())
-            {
-                var getSessionTokenRequest = new GetSessionTokenRequest
-                {
-                    DurationSeconds = 7200 // seconds
-                };
-
-                GetSessionTokenResponse sessionTokenResponse =
-                              await stsClient.GetSessionTokenAsync(getSessionTokenRequest);
-
-                Credentials credentials = sessionTokenResponse.Credentials;
-
-                cachedCredentials = credentials;
-            }
-
-            return cachedCredentials;
         }
     }
 }

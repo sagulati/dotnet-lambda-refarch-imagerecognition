@@ -12,9 +12,9 @@ namespace store_image_metadata
     internal class AuthorizedAppSyncHttpRequest : GraphQLHttpRequest
     {
         private IClientConfig _clientConfig;
-        private Credentials _credentials;
+        private ImmutableCredentials _credentials;
 
-        public AuthorizedAppSyncHttpRequest(GraphQLRequest request, IClientConfig clientConfig, Credentials credentials) : base(request)
+        public AuthorizedAppSyncHttpRequest(GraphQLRequest request, IClientConfig clientConfig, ImmutableCredentials credentials) : base(request)
         {
             _clientConfig = clientConfig;
             _credentials = credentials;
@@ -24,8 +24,8 @@ namespace store_image_metadata
         {
             var result = base.ToHttpRequestMessage(options, serializer);
 
-            if (_credentials.SessionToken != null)
-                result.Headers.Add(HeaderKeys.XAmzSecurityTokenHeader, _credentials.SessionToken);
+            if (_credentials.UseToken)
+                result.Headers.Add(HeaderKeys.XAmzSecurityTokenHeader, _credentials.Token);
 
             var signingRequest = new AmazonServiceRequest(result, _clientConfig)
             {
@@ -34,7 +34,7 @@ namespace store_image_metadata
 
             Console.WriteLine(result.Content.ReadAsStringAsync().Result);
 
-            new AWS4Signer().Sign(signingRequest, _clientConfig, null, _credentials.AccessKeyId, _credentials.SecretAccessKey);
+            new AWS4Signer().Sign(signingRequest, _clientConfig, null, _credentials.AccessKey, _credentials.SecretKey);
 
             foreach (var header in signingRequest.Headers)
             {

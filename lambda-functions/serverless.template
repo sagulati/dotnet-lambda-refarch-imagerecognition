@@ -9,7 +9,7 @@
             "Description": "s3 bucket for photo uploads",
             "Default" : "photo-sharee7fa5f1b25be4c63a81417becda53512182406-devf"
         },
-        "GraphQLEndPoint": {
+        "GraphQLFullEndPoint": {
             "Type" : "String",
             "Description": "graph QL endpoint",
             "Default" : "https://v35urcizvvaapoe6uumkqjz5em.appsync-api.us-east-1.amazonaws.com/graphql"
@@ -76,12 +76,11 @@
                 "Code": {
                     "ImageUri": "./store-image-metadata"
                 },
-                "Environment": [
-                    {
-                        "Name" : "GraphQLEndPoint",
-                        "Value" : {"Ref": "GraphQLEndPoint"}
+                "Environment": {
+                    "Variables": {
+                        "GraphQLEndPoint": {"Ref": "GraphQLFullEndPoint"}
                     }
-                ]
+                }
             },
             "Metadata": {
                 "Dockerfile": "Dockerfile",
@@ -222,7 +221,8 @@
                                 {
                                     "Effect": "Allow",
                                     "Action": [
-                                        "appsync:GraphQL"
+                                        "appsync:GraphQL",
+                                        "sts:*"
                                     ],
                                     "Resource": "*"
                                 }

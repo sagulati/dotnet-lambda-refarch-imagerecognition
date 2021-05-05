@@ -35,40 +35,16 @@ namespace s3Trigger
             // set GraphQL endpoint
             options.EndPoint = new Uri(graphQlEndpoint);
 
-            var tempCredentials = await GetTemporaryCredentialsAsync();
+            ImmutableCredentials credentials = await FallbackCredentialsFactory.GetCredentials().GetCredentialsAsync();
 
             //set pre-processor to add authentication HTTP header to request
             options.PreprocessRequest = (request, client) =>
             {
-                return Task.FromResult((GraphQLHttpRequest)new AuthorizedAppSyncHttpRequest(request, clientConfig, tempCredentials));
+                return Task.FromResult((GraphQLHttpRequest)new AuthorizedAppSyncHttpRequest(request, clientConfig, credentials));
             };
 
             return options;
         }
 
-        private static async Task<Credentials> GetTemporaryCredentialsAsync()
-        {
-            if (cachedCredentials != null)
-            {
-                return cachedCredentials;
-            }
-
-            using (var stsClient = new AmazonSecurityTokenServiceClient())
-            {
-                var getSessionTokenRequest = new GetSessionTokenRequest
-                {
-                    DurationSeconds = 7200 // seconds
-                };
-
-                GetSessionTokenResponse sessionTokenResponse =
-                              await stsClient.GetSessionTokenAsync(getSessionTokenRequest);
-
-                Credentials credentials = sessionTokenResponse.Credentials;
-
-                cachedCredentials = credentials;
-            }
-
-            return cachedCredentials;
-        }
     }
 }
