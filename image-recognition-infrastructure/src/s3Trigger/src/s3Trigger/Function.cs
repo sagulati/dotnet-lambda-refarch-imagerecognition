@@ -18,8 +18,7 @@ namespace s3Trigger
     public class Function
     {
         IAmazonAppSync appSyncClient { get; set; }
-        HttpClient httpClient { get; set; }
-
+        
         private string GraphQLEndpoint { get; set; }
 
         private string StateMachineArn { get; set; }
@@ -29,7 +28,6 @@ namespace s3Trigger
         public Function()
         {
             this.appSyncClient = new AmazonAppSyncClient();
-            httpClient = new HttpClient();
 
             //TODO: Change this to environment Variables.
             StateMachineArn = "arn:aws:states:us-east-1:882525684088:stateMachine:PhotoProcessingWorkflow-dotnet";
@@ -107,8 +105,8 @@ namespace s3Trigger
                         owner
                         uploadTime
                         bucket
-                        SfnExecutionArn
-                        ProcessingStatus
+                        sfnExecutionArn
+                        processingStatus
                     }
                 }",
                 OperationName = "UpdatePhotoMutation",
@@ -117,8 +115,8 @@ namespace s3Trigger
                     input = new
                     {
                         id = objectId,
-                        SfnExecutionArn = workflowMutationResponse.Data.startSfnExecution.executionArn,
-                        ProcessingStatus = "RUNNING"
+                        sfnExecutionArn = workflowMutationResponse.Data.startSfnExecution.executionArn,
+                        processingStatus = "RUNNING"
                     }
                 }
             };

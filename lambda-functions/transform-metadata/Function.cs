@@ -59,7 +59,7 @@ namespace transform_metadata
                 Latitude = ParseCoordinate(exifProfile.GetValue(ExifTag.GPSLatitudeRef)?.Value,
                                         exifProfile.GetValue(ExifTag.GPSLongitude)?.Value),
 
-                Longitude = ParseCoordinate(exifProfile.GetValue(ExifTag.GPSLongitudeRef)?.Value,
+                Longtitude = ParseCoordinate(exifProfile.GetValue(ExifTag.GPSLongitudeRef)?.Value,
                                         exifProfile.GetValue(ExifTag.GPSLongitude)?.Value)
             };
 

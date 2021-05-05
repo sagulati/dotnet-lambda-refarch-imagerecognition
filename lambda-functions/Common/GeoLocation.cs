@@ -8,6 +8,6 @@ namespace Common
     {
         public Coordinate Latitude { get; set; }
 
-        public Coordinate Longitude { get; set; }
+        public Coordinate Longtitude { get; set; }
     }
 }

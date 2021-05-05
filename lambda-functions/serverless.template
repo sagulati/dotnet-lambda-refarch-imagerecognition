@@ -71,7 +71,7 @@
             "Properties": {
                 "PackageType": "Image",
                 "ImageConfig": { "Command": [ "store-image-metadata::store_image_metadata.Function::FunctionHandler" ]},
-                "Role": { "Fn::GetAtt": ["LambdaRole", "Arn"] },
+                "Role": { "Fn::GetAtt": ["StoreMetaDataFunctionRole", "Arn"] },
                 "MemorySize": 512,
                 "Code": {
                     "ImageUri": "./store-image-metadata"
@@ -177,6 +177,46 @@
                                         "rekognition:DetectLabels",
                                         "rekognition:DetectModerationLabels",
                                         "rekognition:DetectText"
+                                    ],
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+
+        "StoreMetaDataFunctionRole": {
+            "Type": "AWS::IAM::Role",
+            "Description" : "",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Action": [
+                                "sts:AssumeRole"
+                            ],
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "StepFunctionLambdaInvoke",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "appsync:GraphQL"
                                     ],
                                     "Resource": "*"
                                 }
