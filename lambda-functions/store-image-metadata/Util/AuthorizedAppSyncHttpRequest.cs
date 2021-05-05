@@ -7,7 +7,7 @@ using GraphQL.Client.Http;
 using System;
 using System.Net.Http;
 
-namespace s3Trigger
+namespace store_image_metadata
 {
     internal class AuthorizedAppSyncHttpRequest : GraphQLHttpRequest
     {

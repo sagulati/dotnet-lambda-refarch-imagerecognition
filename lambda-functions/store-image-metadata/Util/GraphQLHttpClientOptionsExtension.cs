@@ -18,13 +18,11 @@ using Amazon.Util;
 using GraphQL;
 using GraphQL.Client.Http;
 
-namespace s3Trigger
+namespace store_image_metadata
 {
 
     public static class GraphQLHttpClientOptionsExtension
     {
-        private static Credentials cachedCredentials = null;
-
         public async static Task<GraphQLHttpClientOptions> ConfigureAppSync(
             this GraphQLHttpClientOptions options,
             string graphQlEndpoint,
@@ -35,16 +33,15 @@ namespace s3Trigger
             // set GraphQL endpoint
             options.EndPoint = new Uri(graphQlEndpoint);
 
-            ImmutableCredentials credentials = await FallbackCredentialsFactory.GetCredentials().GetCredentialsAsync();
+            ImmutableCredentials tempCredentials = await FallbackCredentialsFactory.GetCredentials().GetCredentialsAsync();
 
             //set pre-processor to add authentication HTTP header to request
             options.PreprocessRequest = (request, client) =>
             {
-                return Task.FromResult((GraphQLHttpRequest)new AuthorizedAppSyncHttpRequest(request, clientConfig, credentials));
+                return Task.FromResult((GraphQLHttpRequest)new AuthorizedAppSyncHttpRequest(request, clientConfig, tempCredentials));
             };
 
             return options;
         }
-
     }
 }

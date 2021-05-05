@@ -9,10 +9,10 @@
             "Description": "s3 bucket for photo uploads",
             "Default" : "photo-sharee7fa5f1b25be4c63a81417becda53512182406-devf"
         },
-        "GraphQLEndPoint": {
+        "GraphQLFullEndPoint": {
             "Type" : "String",
             "Description": "graph QL endpoint",
-            "Default" : ""
+            "Default" : "https://v35urcizvvaapoe6uumkqjz5em.appsync-api.us-east-1.amazonaws.com/graphql"
         },
         "GraphQLAPIId": {
             "Type" : "String",
@@ -38,7 +38,7 @@
                 "Timeout": 60,
                 "Code": {
                     "ImageUri": "./transform-metadata",
-                }
+                },
             },
             "Metadata": {
                 "Dockerfile": "Dockerfile",
@@ -71,10 +71,15 @@
             "Properties": {
                 "PackageType": "Image",
                 "ImageConfig": { "Command": [ "store-image-metadata::store_image_metadata.Function::FunctionHandler" ]},
-                "Role": { "Fn::GetAtt": ["LambdaRole", "Arn"] },
+                "Role": { "Fn::GetAtt": ["StoreMetaDataFunctionRole", "Arn"] },
                 "MemorySize": 512,
                 "Code": {
                     "ImageUri": "./store-image-metadata"
+                },
+                "Environment": {
+                    "Variables": {
+                        "GraphQLEndPoint": {"Ref": "GraphQLFullEndPoint"}
+                    }
                 }
             },
             "Metadata": {
@@ -177,6 +182,47 @@
                                         "rekognition:DetectLabels",
                                         "rekognition:DetectModerationLabels",
                                         "rekognition:DetectText"
+                                    ],
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+
+        "StoreMetaDataFunctionRole": {
+            "Type": "AWS::IAM::Role",
+            "Description" : "",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Action": [
+                                "sts:AssumeRole"
+                            ],
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "StepFunctionLambdaInvoke",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "appsync:GraphQL",
+                                        "sts:*"
                                     ],
                                     "Resource": "*"
                                 }

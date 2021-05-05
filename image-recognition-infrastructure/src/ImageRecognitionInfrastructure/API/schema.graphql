@@ -33,8 +33,8 @@ input CreatePhotoInput {
 	format: String
 	exifMake: String
 	exitModel: String
-	SfnExecutionArn: String
-	ProcessingStatus: Status
+	sfnExecutionArn: String
+	processingStatus: Status
 	objectDetected: [String]
 	geoLocation: GeoCoordinatesInput
 }
@@ -56,43 +56,43 @@ enum GeoCoordinateDirection {
 
 type GeoCoordinates @aws_iam
 @aws_cognito_user_pools {
-	Latitude: Latitude!
-	Longtitude: Longtitude!
+	latitude: Latitude!
+	longtitude: Longtitude!
 }
 
 input GeoCoordinatesInput {
-	Latitude: LatitudeInput!
-	Longtitude: LongtitudeInput!
+	latitude: LatitudeInput!
+	longtitude: LongtitudeInput!
 }
 
 type Latitude @aws_iam
 @aws_cognito_user_pools {
-	D: Float!
-	M: Float!
-	S: Float!
-	Direction: GeoCoordinateDirection!
+	d: Float!
+	m: Float!
+	s: Float!
+	direction: GeoCoordinateDirection!
 }
 
 input LatitudeInput {
-	D: Float!
-	M: Float!
-	S: Float!
-	Direction: GeoCoordinateDirection!
+	d: Float!
+	m: Float!
+	s: Float!
+	direction: GeoCoordinateDirection!
 }
 
 type Longtitude @aws_iam
 @aws_cognito_user_pools {
-	D: Float!
-	M: Float!
-	S: Float!
-	Direction: GeoCoordinateDirection!
+	d: Float!
+	m: Float!
+	s: Float!
+	direction: GeoCoordinateDirection!
 }
 
 input LongtitudeInput {
-	D: Float!
-	M: Float!
-	S: Float!
-	Direction: GeoCoordinateDirection!
+	d: Float!
+	m: Float!
+	s: Float!
+	direction: GeoCoordinateDirection!
 }
 
 input ModelAlbumConditionInput {
@@ -184,8 +184,8 @@ input ModelPhotoConditionInput {
 	format: ModelStringInput
 	exifMake: ModelStringInput
 	exitModel: ModelStringInput
-	SfnExecutionArn: ModelStringInput
-	ProcessingStatus: ModelStatusInput
+	sfnExecutionArn: ModelStringInput
+	processingStatus: ModelStatusInput
 	objectDetected: ModelStringInput
 	and: [ModelPhotoConditionInput]
 	or: [ModelPhotoConditionInput]
@@ -207,8 +207,8 @@ input ModelPhotoFilterInput {
 	format: ModelStringInput
 	exifMake: ModelStringInput
 	exitModel: ModelStringInput
-	SfnExecutionArn: ModelStringInput
-	ProcessingStatus: ModelStatusInput
+	sfnExecutionArn: ModelStringInput
+	processingStatus: ModelStatusInput
 	objectDetected: ModelStringInput
 	and: [ModelPhotoFilterInput]
 	or: [ModelPhotoFilterInput]
@@ -296,8 +296,8 @@ type Photo @aws_iam
 	format: String
 	exifMake: String
 	exitModel: String
-	SfnExecutionArn: String
-	ProcessingStatus: Status
+	sfnExecutionArn: String
+	processingStatus: Status
 	objectDetected: [String]
 	geoLocation: GeoCoordinates
 	createdAt: AWSDateTime!
@@ -415,8 +415,8 @@ input UpdatePhotoInput {
 	format: String
 	exifMake: String
 	exitModel: String
-	SfnExecutionArn: String
-	ProcessingStatus: Status
+	sfnExecutionArn: String
+	processingStatus: Status
 	objectDetected: [String]
 	geoLocation: GeoCoordinatesInput
 }
