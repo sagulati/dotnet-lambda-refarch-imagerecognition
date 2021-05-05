@@ -133,7 +133,9 @@
                 },
                 "DefinitionString": {
                     "Fn::Sub": ""
-                }
+                },
+                "StateMachineName":"PhotoProcessingWorkflow-dotnet"
+
             }
         },
 

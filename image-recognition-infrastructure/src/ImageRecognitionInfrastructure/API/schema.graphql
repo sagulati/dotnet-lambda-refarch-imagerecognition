@@ -1,0 +1,426 @@
+type Album @aws_iam
+@aws_cognito_user_pools {
+	id: ID!
+	name: String!
+	owner: String
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+	photos(
+		uploadTime: ModelStringKeyConditionInput,
+		filter: ModelPhotoFilterInput,
+		sortDirection: ModelSortDirection,
+		limit: Int,
+		nextToken: String
+	): ModelPhotoConnection
+		@aws_iam
+@aws_cognito_user_pools
+}
+
+input CreateAlbumInput {
+	id: ID
+	name: String!
+	owner: String
+}
+
+input CreatePhotoInput {
+	id: ID
+	albumId: ID!
+	owner: String
+	uploadTime: AWSDateTime!
+	bucket: String!
+	fullsize: PhotoS3InfoInput
+	thumbnail: PhotoS3InfoInput
+	format: String
+	exifMake: String
+	exitModel: String
+	SfnExecutionArn: String
+	ProcessingStatus: Status
+	objectDetected: [String]
+	geoLocation: GeoCoordinatesInput
+}
+
+input DeleteAlbumInput {
+	id: ID
+}
+
+input DeletePhotoInput {
+	id: ID
+}
+
+enum GeoCoordinateDirection {
+	N
+	W
+	S
+	E
+}
+
+type GeoCoordinates @aws_iam
+@aws_cognito_user_pools {
+	Latitude: Latitude!
+	Longtitude: Longtitude!
+}
+
+input GeoCoordinatesInput {
+	Latitude: LatitudeInput!
+	Longtitude: LongtitudeInput!
+}
+
+type Latitude @aws_iam
+@aws_cognito_user_pools {
+	D: Float!
+	M: Float!
+	S: Float!
+	Direction: GeoCoordinateDirection!
+}
+
+input LatitudeInput {
+	D: Float!
+	M: Float!
+	S: Float!
+	Direction: GeoCoordinateDirection!
+}
+
+type Longtitude @aws_iam
+@aws_cognito_user_pools {
+	D: Float!
+	M: Float!
+	S: Float!
+	Direction: GeoCoordinateDirection!
+}
+
+input LongtitudeInput {
+	D: Float!
+	M: Float!
+	S: Float!
+	Direction: GeoCoordinateDirection!
+}
+
+input ModelAlbumConditionInput {
+	name: ModelStringInput
+	and: [ModelAlbumConditionInput]
+	or: [ModelAlbumConditionInput]
+	not: ModelAlbumConditionInput
+}
+
+type ModelAlbumConnection @aws_iam
+@aws_cognito_user_pools {
+	items: [Album]
+	nextToken: String
+}
+
+input ModelAlbumFilterInput {
+	id: ModelIDInput
+	name: ModelStringInput
+	owner: ModelStringInput
+	and: [ModelAlbumFilterInput]
+	or: [ModelAlbumFilterInput]
+	not: ModelAlbumFilterInput
+}
+
+enum ModelAttributeTypes {
+	binary
+	binarySet
+	bool
+	list
+	map
+	number
+	numberSet
+	string
+	stringSet
+	_null
+}
+
+input ModelBooleanInput {
+	ne: Boolean
+	eq: Boolean
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+	ne: Float
+	eq: Float
+	le: Float
+	lt: Float
+	ge: Float
+	gt: Float
+	between: [Float]
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+	ne: ID
+	eq: ID
+	le: ID
+	lt: ID
+	ge: ID
+	gt: ID
+	contains: ID
+	notContains: ID
+	between: [ID]
+	beginsWith: ID
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+	size: ModelSizeInput
+}
+
+input ModelIntInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	between: [Int]
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+}
+
+input ModelPhotoConditionInput {
+	albumId: ModelIDInput
+	uploadTime: ModelStringInput
+	bucket: ModelStringInput
+	format: ModelStringInput
+	exifMake: ModelStringInput
+	exitModel: ModelStringInput
+	SfnExecutionArn: ModelStringInput
+	ProcessingStatus: ModelStatusInput
+	objectDetected: ModelStringInput
+	and: [ModelPhotoConditionInput]
+	or: [ModelPhotoConditionInput]
+	not: ModelPhotoConditionInput
+}
+
+type ModelPhotoConnection @aws_iam
+@aws_cognito_user_pools {
+	items: [Photo]
+	nextToken: String
+}
+
+input ModelPhotoFilterInput {
+	id: ModelIDInput
+	albumId: ModelIDInput
+	owner: ModelStringInput
+	uploadTime: ModelStringInput
+	bucket: ModelStringInput
+	format: ModelStringInput
+	exifMake: ModelStringInput
+	exitModel: ModelStringInput
+	SfnExecutionArn: ModelStringInput
+	ProcessingStatus: ModelStatusInput
+	objectDetected: ModelStringInput
+	and: [ModelPhotoFilterInput]
+	or: [ModelPhotoFilterInput]
+	not: ModelPhotoFilterInput
+}
+
+input ModelSizeInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	between: [Int]
+}
+
+enum ModelSortDirection {
+	ASC
+	DESC
+}
+
+input ModelStatusInput {
+	eq: Status
+	ne: Status
+}
+
+input ModelStringInput {
+	ne: String
+	eq: String
+	le: String
+	lt: String
+	ge: String
+	gt: String
+	contains: String
+	notContains: String
+	between: [String]
+	beginsWith: String
+	attributeExists: Boolean
+	attributeType: ModelAttributeTypes
+	size: ModelSizeInput
+}
+
+input ModelStringKeyConditionInput {
+	eq: String
+	le: String
+	lt: String
+	ge: String
+	gt: String
+	between: [String]
+	beginsWith: String
+}
+
+type Mutation {
+	startSfnExecution(input: StartSfnExecutionInput!): StartSfnExecutionResult
+		@aws_iam
+	createAlbum(input: CreateAlbumInput!, condition: ModelAlbumConditionInput): Album
+		@aws_iam
+@aws_cognito_user_pools
+	updateAlbum(input: UpdateAlbumInput!, condition: ModelAlbumConditionInput): Album
+		@aws_iam
+@aws_cognito_user_pools
+	deleteAlbum(input: DeleteAlbumInput!, condition: ModelAlbumConditionInput): Album
+		@aws_iam
+@aws_cognito_user_pools
+	createPhoto(input: CreatePhotoInput!, condition: ModelPhotoConditionInput): Photo
+		@aws_iam
+@aws_cognito_user_pools
+	updatePhoto(input: UpdatePhotoInput!, condition: ModelPhotoConditionInput): Photo
+		@aws_iam
+@aws_cognito_user_pools
+	deletePhoto(input: DeletePhotoInput!, condition: ModelPhotoConditionInput): Photo
+		@aws_iam
+@aws_cognito_user_pools
+}
+
+type Photo @aws_iam
+@aws_cognito_user_pools {
+	id: ID!
+	albumId: ID!
+	owner: String
+	uploadTime: AWSDateTime!
+	bucket: String!
+	fullsize: PhotoS3Info
+	thumbnail: PhotoS3Info
+	format: String
+	exifMake: String
+	exitModel: String
+	SfnExecutionArn: String
+	ProcessingStatus: Status
+	objectDetected: [String]
+	geoLocation: GeoCoordinates
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+	album: Album
+		@aws_iam
+@aws_cognito_user_pools
+}
+
+type PhotoS3Info @aws_iam
+@aws_cognito_user_pools {
+	key: String!
+	width: Int
+	height: Int
+}
+
+input PhotoS3InfoInput {
+	key: String!
+	width: Int
+	height: Int
+}
+
+type Query {
+	checkSfnStatus(input: checkSfnStatusInput!): SfnStatusResult
+	listAlbums(filter: ModelAlbumFilterInput, limit: Int, nextToken: String): ModelAlbumConnection
+		@aws_iam
+@aws_cognito_user_pools
+	getAlbum(id: ID!): Album
+		@aws_iam
+@aws_cognito_user_pools
+	getPhoto(id: ID!): Photo
+		@aws_iam
+@aws_cognito_user_pools
+	listPhotos(filter: ModelPhotoFilterInput, limit: Int, nextToken: String): ModelPhotoConnection
+		@aws_iam
+@aws_cognito_user_pools
+	listPhotosByAlbumUploadTime(
+		albumId: ID,
+		uploadTime: ModelStringKeyConditionInput,
+		sortDirection: ModelSortDirection,
+		filter: ModelPhotoFilterInput,
+		limit: Int,
+		nextToken: String
+	): ModelPhotoConnection
+		@aws_iam
+@aws_cognito_user_pools
+}
+
+type SfnStatusResult {
+	startDate: Float
+	stopDate: Float
+	status: Status
+}
+
+input StartSfnExecutionInput {
+	input: String!
+	stateMachineArn: String!
+}
+
+type StartSfnExecutionResult @aws_iam {
+	executionArn: String!
+	startDate: Float
+}
+
+enum Status {
+	PENDING
+	RUNNING
+	SUCCEEDED
+	FAILED
+	TIMED_OUT
+	ABORTED
+}
+
+type Subscription {
+	onCreateAlbum(owner: String): Album
+		@aws_subscribe(mutations: ["createAlbum"])
+@aws_iam
+@aws_cognito_user_pools
+	onUpdateAlbum(owner: String): Album
+		@aws_subscribe(mutations: ["updateAlbum"])
+@aws_iam
+@aws_cognito_user_pools
+	onDeleteAlbum(owner: String): Album
+		@aws_subscribe(mutations: ["deleteAlbum"])
+@aws_iam
+@aws_cognito_user_pools
+	onCreatePhoto(owner: String): Photo
+		@aws_subscribe(mutations: ["createPhoto"])
+@aws_iam
+@aws_cognito_user_pools
+	onUpdatePhoto(owner: String): Photo
+		@aws_subscribe(mutations: ["updatePhoto"])
+@aws_iam
+@aws_cognito_user_pools
+	onDeletePhoto(owner: String): Photo
+		@aws_subscribe(mutations: ["deletePhoto"])
+@aws_iam
+@aws_cognito_user_pools
+}
+
+input UpdateAlbumInput {
+	id: ID!
+	name: String
+	owner: String
+}
+
+input UpdatePhotoInput {
+	id: ID!
+	albumId: ID
+	owner: String
+	uploadTime: AWSDateTime
+	bucket: String
+	fullsize: PhotoS3InfoInput
+	thumbnail: PhotoS3InfoInput
+	format: String
+	exifMake: String
+	exitModel: String
+	SfnExecutionArn: String
+	ProcessingStatus: Status
+	objectDetected: [String]
+	geoLocation: GeoCoordinatesInput
+}
+
+input checkSfnStatusInput {
+	executionArn: String!
+}

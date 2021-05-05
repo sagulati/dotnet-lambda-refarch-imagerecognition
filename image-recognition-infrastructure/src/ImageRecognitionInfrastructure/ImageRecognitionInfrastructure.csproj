@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Amazon.CDK" Version="1.101.0"/>
+    <PackageReference Include="Amazon.CDK.AWS.AppSync" Version="1.101.0"/>
+    <PackageReference Include="Amazon.CDK.AWS.DynamoDB" Version="1.101.0"/>
+    <PackageReference Include="Amazon.CDK.AWS.IAM" Version="1.101.0"/>
+    <PackageReference Include="Amazon.CDK.AWS.S3" Version="1.101.0"/>
+  </ItemGroup>
+</Project>
