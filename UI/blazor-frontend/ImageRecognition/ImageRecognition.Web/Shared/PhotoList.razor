@@ -1,0 +1,73 @@
+@inject S3Hander S3
+
+<div>
+    <div class="ui hidden divider"></div>
+    <div class="ui cards">
+        @foreach (var item in _photoViewModels){
+            <div class="ui card">
+                <div class="center aligned content">
+                    <div>
+                        <div style="position: relative;">
+                            <img src="@item.Item1">
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="content">
+                    <div class="meta"><span class="date">Uploaded: 11/19/2020, 11:29:31 AM</span></div>
+                    <div class="description">
+                        <p><b>Detected labels:</b></p>
+                        @if(@item?.Item2?.ObjectDetected != null)
+                        {
+                            @foreach (var label in @item.Item2.ObjectDetected)
+                            {
+                                <div class="ui orange basic label">@label</div>
+                            }
+                        }
+                        <p><b>Image size: </b>3000 x 3002</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public IReadOnlyList<IPhoto3>? Photos {get;set;}
+
+    private List<Tuple<string, IPhoto3>> _photoViewModels = new List<Tuple<string, IPhoto3>>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await S3.InitializeAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if(Photos != null)
+        {
+            foreach(IPhoto3 photo in Photos)
+            {
+                string signedThumUrl = await GetSignedUrlAsync(photo.Bucket, photo.Thumbnail?.Key);
+
+                _photoViewModels.Add(Tuple.Create(signedThumUrl, photo));
+            }
+        }
+    }
+
+    public async Task<string> GetSignedUrlAsync(string albumBucketName, string? key){
+        if(string.IsNullOrEmpty(key))
+        {
+            return string.Empty;
+        }
+        string url = await S3.GetSignedUrlAsync(albumBucketName, key);
+        Console.WriteLine(url);
+
+        return url;
+    }
+
+}
