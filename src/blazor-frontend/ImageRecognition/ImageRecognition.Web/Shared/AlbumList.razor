@@ -1,4 +1,6 @@
-@inject IAlbumClient AlbumClient
+@using GraphQL
+@inject GraphQLHttpClient AlbumClient
+@using Newtonsoft.Json
 
 <div class="ui segment">
     <h3 class="ui header">My Albums</h3>
@@ -13,18 +15,34 @@
     </div>
 </div>
 
-@code {      
-    
-    private IReadOnlyList<IAlbum1> albums = new List<IAlbum1>();
+@code {
+
+    private IReadOnlyList<Album> albums = new List<Album>();
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await AlbumClient.ListAlbumsAsync();
+        var result = await GetAllAlbums();
 
-        if(result?.Data?.ListAlbums?.Items != null)
+        albums = result;
+    }
+
+    public async Task<Album[]> GetAllAlbums()
+    {
+        var query = new GraphQLRequest
         {
-            albums = result.Data.ListAlbums.Items;
-        }
+            Query = @"
+                    query albumQuery{
+                      listAlbums {
+                        items {
+                            id
+                            name
+                        }
+                      }
+                    }"
+        };
+        var response = await AlbumClient.SendQueryAsync<ListAlbumResponse>(query);
+
+        return response.Data?.ListAlbums?.Albums ?? new Album[] { };
     }
 
 }

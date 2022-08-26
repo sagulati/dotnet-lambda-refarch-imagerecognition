@@ -38,7 +38,7 @@ namespace ImageRecognition.Web.Models
         {
             _provider = provider;
             _navigation = navigation;
-            ConfigureHandler(authorizedUrls: new[] { "https://syb6ykx6crfhlfchv5fnss2ekq.appsync-api.us-east-1.amazonaws.com/graphql" });
+            ConfigureHandler(authorizedUrls: new[] { "https://qpwk2sy3bza6dag23lzxktm3ky.appsync-api.us-east-1.amazonaws.com/graphql" });
         }
 
         /// <inheritdoc />

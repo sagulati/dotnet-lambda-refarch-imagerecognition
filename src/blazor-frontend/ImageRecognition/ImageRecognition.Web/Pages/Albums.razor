@@ -1,6 +1,6 @@
 @page "/albums/{Id}"
 @attribute [Authorize]
-@inject IAlbumClient AlbumClient
+@*@inject IAlbumClient AlbumClient*@
 @using ImageRecognition.Web.Shared;
 
 <div class="ui padded grid">
@@ -13,27 +13,27 @@
                     id="add-image-file-input" type="file" accept="image/*" multiple="" style="display: none;">
             </div>
 
-            <PhotoList Photos="@photos">
+            @*<PhotoList Photos="@photos">*@
 
-            </PhotoList>
+            @*</PhotoList>*@
 
         </div>
     </div>
 </div>
 
 @code{
-    [Parameter]
-    public string Id {get; set;}
+    //[Parameter]
+    //public string Id {get; set;}
 
-    private IReadOnlyList<IPhoto3> photos = new List<IPhoto3>();
+    //private IReadOnlyList<IPhoto3> photos = new List<IPhoto3>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        var result = await AlbumClient.ListPhotosByAlbumUploadTimeAsync(Id);
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    var result = await AlbumClient.ListPhotosByAlbumUploadTimeAsync(Id);
 
-        if(result?.Data?.ListPhotosByAlbumUploadTime?.Items != null)
-        {
-            photos = result.Data.ListPhotosByAlbumUploadTime.Items;
-        }
-    }
+    //    if(result?.Data?.ListPhotosByAlbumUploadTime?.Items != null)
+    //    {
+    //        photos = result.Data.ListPhotosByAlbumUploadTime.Items;
+    //    }
+    //}
 }
