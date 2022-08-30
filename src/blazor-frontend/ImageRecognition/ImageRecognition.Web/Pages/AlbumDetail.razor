@@ -1,0 +1,39 @@
+@page "/albums/{Id}"
+@attribute [Authorize]
+
+@using ImageRecognition.Web.Shared;
+
+<div class="ui padded grid">
+    <div class="column">
+        <div class="ui segment">
+            <h3 class="ui header">Sanjay Gulati</h3>
+            <div>
+                <div class="field"><button class="ui button"><i aria-hidden="true"
+                            class="file image outline icon"></i>Add Images</button></div><input
+                    id="add-image-file-input" type="file" accept="image/*" multiple="" style="display: none;">
+            </div>
+
+            @*<PhotoList Photos="@photos">*@
+
+            @*</PhotoList>*@
+
+        </div>
+    </div>
+</div>
+
+@code{
+    //[Parameter]
+    //public string Id {get; set;}
+
+    //private IReadOnlyList<IPhoto3> photos = new List<IPhoto3>();
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    var result = await AlbumClient.ListPhotosByAlbumUploadTimeAsync(Id);
+
+    //    if(result?.Data?.ListPhotosByAlbumUploadTime?.Items != null)
+    //    {
+    //        photos = result.Data.ListPhotosByAlbumUploadTime.Items;
+    //    }
+    //}
+}

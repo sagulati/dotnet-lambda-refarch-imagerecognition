@@ -1,39 +1,51 @@
-@page "/albums/{Id}"
+@page "/albums"
 @attribute [Authorize]
-@*@inject IAlbumClient AlbumClient*@
-@using ImageRecognition.Web.Shared;
 
-<div class="ui padded grid">
-    <div class="column">
-        <div class="ui segment">
-            <h3 class="ui header">Sanjay Gulati</h3>
-            <div>
-                <div class="field"><button class="ui button"><i aria-hidden="true"
-                            class="file image outline icon"></i>Add Images</button></div><input
-                    id="add-image-file-input" type="file" accept="image/*" multiple="" style="display: none;">
+@using GraphQL
+@inject GraphQLHttpClient AlbumClient
+@using Newtonsoft.Json
+
+<div class="ui segment">
+    <h3 class="ui header">My Albums</h3>
+    <div role="list" class="ui divided relaxed list">
+        @foreach (var item in albums)
+        {
+            <div role="listitem" class="item">
+                <a href="/albums/@item.Id">@item.Name</a>
             </div>
-
-            @*<PhotoList Photos="@photos">*@
-
-            @*</PhotoList>*@
-
-        </div>
+        }
+        
     </div>
 </div>
 
-@code{
-    //[Parameter]
-    //public string Id {get; set;}
+@code {
 
-    //private IReadOnlyList<IPhoto3> photos = new List<IPhoto3>();
+    private IReadOnlyList<Album> albums = new List<Album>();
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    var result = await AlbumClient.ListPhotosByAlbumUploadTimeAsync(Id);
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await GetAllAlbums();
 
-    //    if(result?.Data?.ListPhotosByAlbumUploadTime?.Items != null)
-    //    {
-    //        photos = result.Data.ListPhotosByAlbumUploadTime.Items;
-    //    }
-    //}
+        albums = result;
+    }
+
+    public async Task<Album[]> GetAllAlbums()
+    {
+        var query = new GraphQLRequest
+        {
+            Query = @"
+                    query albumQuery{
+                      listAlbums {
+                        items {
+                            id
+                            name
+                        }
+                      }
+                    }"
+        };
+        var response = await AlbumClient.SendQueryAsync<ListAlbumResponse>(query);
+
+        return response.Data?.ListAlbums?.Albums ?? new Album[] { };
+    }
+
 }

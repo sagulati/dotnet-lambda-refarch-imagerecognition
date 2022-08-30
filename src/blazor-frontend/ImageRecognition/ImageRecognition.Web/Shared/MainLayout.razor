@@ -1,24 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
- 
-
-<div class="main">
-    <div class="ui inverted attached menu">
-        <div class="item">
-            <a href='/'>
-                <div class="ui yellow header">Albums</div>
-            </a>
-        </div>
-        <div class="right menu">
-            <div class="item">
-                <LoginDisplay />
-            </div>
-        </div>
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
     </div>
 
-    <div>
-        
+    <main>
+        <div class="top-row px-4 auth">
+            <LoginDisplay />
+        </div>
+
+        <article class="content px-4">
             @Body
-        
-    </div>
+        </article>
+    </main>
 </div>
+
